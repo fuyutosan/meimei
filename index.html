@@ -245,7 +245,7 @@
       <img src="assets/Meimei.png" alt="メイメイ">
     </div>
     <h1>MEIMEI</h1>
-    <p class="tagline">パンダさんパワーをあなたに 🐼</p>
+    <p class="tagline" id="tagline"></p>
   </header>
 
   <main>
@@ -326,6 +326,15 @@
     const today = new Date();
     const dateNum = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
     document.getElementById('panda-power').textContent = pandaPowers[dateNum % pandaPowers.length];
+
+    // タイピングアニメーション
+    const tagline = document.getElementById('tagline');
+    const text = 'パンダさんパワーをあなたに 🐼';
+    let i = 0;
+    function type() {
+      if (i < text.length) { tagline.textContent += text[i++]; setTimeout(type, 80); }
+    }
+    setTimeout(type, 600);
 
     // スクロールフェードイン
     const observer = new IntersectionObserver(entries =>
