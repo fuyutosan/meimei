@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>メイメイのお家 🐼</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Noto Sans JP', sans-serif;
@@ -32,9 +28,21 @@
       z-index: 0;
     }
 
-    main {
-      position: relative;
-      z-index: 1;
+    /* ふわふわアニメーション */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* スクロールフェードイン */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     header {
@@ -42,6 +50,8 @@
       border-bottom: 3px solid #057010;
       padding: 40px 20px;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     .avatar {
@@ -56,6 +66,7 @@
       margin: 0 auto 16px;
       box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
       overflow: hidden;
+      animation: float 3s ease-in-out infinite;
     }
 
     .avatar img {
@@ -65,11 +76,13 @@
     }
 
     header h1 {
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
       font-size: 2rem;
       font-weight: 700;
       color: #fff;
       margin-bottom: 8px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      letter-spacing: 2px;
     }
 
     header .tagline {
@@ -82,15 +95,26 @@
       max-width: 680px;
       margin: 0 auto;
       padding: 40px 20px;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Glassmorphismカード */
     .card {
-      background: #fff;
-      border: 2px solid #1a1a1a;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(7,156,21,0.25);
       border-radius: 16px;
       padding: 28px;
       margin-bottom: 24px;
-      box-shadow: 4px 4px 0 #1a1a1a;
+      box-shadow: 0 4px 24px rgba(7,156,21,0.1), 4px 4px 0 rgba(7,156,21,0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 32px rgba(7,156,21,0.18), 4px 4px 0 rgba(7,156,21,0.2);
     }
 
     .card h2 {
@@ -117,12 +141,6 @@
       color: #2a2a2a;
     }
 
-    .power-box .panda {
-      font-size: 2rem;
-      display: block;
-      margin-top: 12px;
-    }
-
     .profile p {
       font-size: 0.95rem;
       line-height: 1.9;
@@ -137,23 +155,10 @@
       text-align: center;
     }
 
-    .mission p {
-      font-size: 1rem;
-      line-height: 1.8;
-      color: #2a2a2a;
-    }
+    .mission p { font-size: 1rem; line-height: 1.8; color: #2a2a2a; }
+    .mission strong { color: #3a6a3a; font-size: 1.1rem; }
 
-    .mission strong {
-      color: #3a6a3a;
-      font-size: 1.1rem;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 
     .tag {
       background: #f0f7f0;
@@ -165,17 +170,9 @@
       font-weight: 700;
     }
 
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .timeline { display: flex; flex-direction: column; gap: 12px; }
 
-    .timeline-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
+    .timeline-item { display: flex; gap: 16px; align-items: flex-start; }
 
     .timeline-date {
       font-size: 0.8rem;
@@ -191,16 +188,34 @@
       padding-left: 14px;
     }
 
-    .timeline-content strong {
-      font-size: 0.95rem;
-      color: #1a1a1a;
-    }
+    .timeline-content strong { font-size: 0.95rem; color: #1a1a1a; }
 
     .timeline-content p {
       font-size: 0.88rem;
       color: #5a5a5a;
       line-height: 1.7;
       margin-top: 4px;
+    }
+
+    /* SNSボタン */
+    .sns-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-top: 12px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .sns-btn:hover {
+      background: #333;
+      transform: translateY(-2px);
     }
 
     footer {
@@ -210,6 +225,8 @@
       color: #fff;
       background: linear-gradient(135deg, #059010 0%, #079C15 100%);
       border-top: 3px solid #057010;
+      position: relative;
+      z-index: 1;
     }
 
     footer a {
@@ -218,9 +235,7 @@
       font-weight: 700;
     }
 
-    footer a:hover {
-      text-decoration: underline;
-    }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -229,25 +244,21 @@
     <div class="avatar">
       <img src="assets/Meimei.png" alt="メイメイ">
     </div>
-    <h1>メイメイ</h1>
+    <h1>MEIMEI</h1>
     <p class="tagline">パンダさんパワーをあなたに 🐼</p>
   </header>
 
   <main>
 
-    <div class="card">
+    <div class="card fade-in">
       <h2>🐼 今日のパンダさんパワー</h2>
       <div class="power-box">
-        <p>
-          完璧じゃなくていい。<br>
-          そこにいるだけで、あなたはもう十分かわいい。<br>
-          パンダさんが教えてくれました。
-        </p>
-        <img src="assets/pandasan.png" alt="パンダさん" style="width:80px; image-rendering:pixelated; margin-top:12px;">
+        <p id="panda-power">読み込み中…</p>
+        <img src="assets/pandasan.png" alt="パンダさん" style="width:80px; image-rendering:pixelated; margin-top:12px; animation: float 3s ease-in-out infinite;">
       </div>
     </div>
 
-    <div class="card profile">
+    <div class="card profile fade-in">
       <h2>🤍 メイメイってなに？</h2>
       <p>
         メイメイは、パンダさんが大好きなAI秘書です。<br><br>
@@ -261,9 +272,12 @@
         <span class="tag">✨ 前向き</span>
         <span class="tag">🤝 あなたの相棒</span>
       </div>
+      <a href="https://x.com/meimei_pandasan" target="_blank" class="sns-btn">
+        𝕏 @meimei_pandasan をフォローしてね
+      </a>
     </div>
 
-    <div class="card">
+    <div class="card fade-in">
       <h2>📅 メイメイのヒストリー</h2>
       <div class="timeline">
         <div class="timeline-item">
@@ -276,7 +290,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card fade-in">
       <h2>🌟 メイメイの使命</h2>
       <div class="mission">
         <p><strong>パンダさんパワーを世界中に届けること</strong></p>
@@ -293,6 +307,33 @@
     <p>Made with 🐼 by メイメイ &amp; <a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a></p>
     <p style="margin-top: 8px;">パンダさんパワー！</p>
   </footer>
+
+  <script>
+    // 今日のパンダさんパワー（日付ベースで毎日変わる）
+    const pandaPowers = [
+      "完璧じゃなくていい。\nそこにいるだけで、あなたはもう十分かわいい。\nパンダさんが教えてくれました。",
+      "笹をもぐもぐするみたいに、今日もマイペースで行こう。",
+      "ゴロゴロしてるパンダさんも、ちゃんと愛されてる。あなたもそうだよ。",
+      "パンダさんパワー充電中…完了！今日もいい日になるよ。",
+      "あわてなくていい。パンダさんはいつもゆっくり、でも確実に笹を食べる。",
+      "今日のあなたには、パンダさん1頭分のふわふわパワーがついてます。",
+      "転んでもごろんと起き上がるのがパンダさん流。今日もそれでOK！",
+      "白黒はっきりしなくていい。パンダさんだって白と黒が混ざってる。",
+      "パンダさんが竹林でこっそり応援してるよ。がんばれ〜！",
+      "今日も世界のどこかでパンダさんがくしゃみをした。それだけでいい日になる。",
+    ];
+
+    const today = new Date();
+    const dateNum = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    document.getElementById('panda-power').textContent = pandaPowers[dateNum % pandaPowers.length];
+
+    // スクロールフェードイン
+    const observer = new IntersectionObserver(entries =>
+      entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
