@@ -88,14 +88,14 @@
       border-radius: 50%;
       border: 4px solid #fff;
       background: #fff;
-      display: flex; align-items: flex-end; justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 16px;
       box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
       overflow: hidden;
       animation: float 3s ease-in-out infinite;
     }
 
-    .avatar img { width: 110px; height: auto; image-rendering: pixelated; }
+    .avatar img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
 
     header h1 {
       font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
@@ -256,7 +256,6 @@
       header { padding: 28px 16px; }
       header h1 { font-size: 1.5rem; }
       .avatar { width: 110px; height: 110px; }
-      .avatar img { width: 86px; }
       main { padding: 24px 12px; }
       .card { padding: 20px 16px; }
       .speech-bubble p { font-size: 1rem; }
