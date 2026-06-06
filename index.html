@@ -205,11 +205,12 @@
     footer a { color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 700; }
     footer a:hover { text-decoration: underline; }
 
-    .share-area { text-align: center; margin: 8px 0 32px; }
-    .share-area p { font-size: 0.85rem; color: #5a8a5a; font-weight: 700; margin-bottom: 12px; }
-    .share-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 24px; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
-    .share-btn:hover { transform: translateY(-2px); opacity: 0.85; }
+    .share-area { text-align: center; margin: 0 0 24px; padding: 32px 20px; background: linear-gradient(135deg, #f0f7f0, #e8f5e8); border: 2px solid #079C15; border-radius: 16px; }
+    .share-area .share-title { font-size: 1.3rem; font-weight: 700; color: #057a10; margin-bottom: 6px; }
+    .share-area .share-sub { font-size: 0.9rem; color: #5a8a5a; margin-bottom: 20px; }
+    .share-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 28px; font-size: 1rem; font-weight: 700; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .share-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
     .share-btn.x { background: #000; color: #fff; }
     .share-btn.line { background: #06C755; color: #fff; }
 
@@ -291,7 +292,8 @@
     </div>
 
     <div class="share-area fade-in">
-      <p>🐼 パンダさんパワーを受け取ったらシェアしてね！</p>
+      <div class="share-title">🐼 パンダさんパワーを届けてね！</div>
+      <div class="share-sub">シェアするだけで、誰かが笑顔になれるかも。</div>
       <div class="share-btns">
         <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://fuyutosan.github.io/meimei/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
         <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://fuyutosan.github.io/meimei/" target="_blank">💬 LINEでシェア</a>
