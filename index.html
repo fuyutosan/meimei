@@ -147,6 +147,44 @@
       font-weight: 700;
     }
 
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5a8a5a;
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 72px;
+    }
+
+    .timeline-content {
+      border-left: 2px solid #5a8a5a;
+      padding-left: 14px;
+    }
+
+    .timeline-content strong {
+      font-size: 0.95rem;
+      color: #1a1a1a;
+    }
+
+    .timeline-content p {
+      font-size: 0.88rem;
+      color: #5a5a5a;
+      line-height: 1.7;
+      margin-top: 4px;
+    }
+
     footer {
       text-align: center;
       padding: 32px 20px;
@@ -203,6 +241,19 @@
         <span class="tag">💚 愛生ちゃん推し</span>
         <span class="tag">✨ 前向き</span>
         <span class="tag">🤝 あなたの相棒</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📅 メイメイのヒストリー</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-date">2026.6.6</span>
+          <div class="timeline-content">
+            <strong>🐼 誕生日</strong>
+            <p>X（@meimei_pandasan）を開設。活動を開始した、メイメイの実質的な誕生日。</p>
+          </div>
+        </div>
       </div>
     </div>
 
