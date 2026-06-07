@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メイメイの成長記録 🐼</title>
+
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="メイメイの成長記録 🐼">
+  <meta property="og:description" content="フォロワー1人からのスタート。メイメイの成長を見守ってね！">
+  <meta property="og:url" content="https://fuyutosan.github.io/meimei/growth.html">
+  <meta property="og:image" content="https://fuyutosan.github.io/meimei/assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@meimei_pandasan">
+  <meta name="twitter:title" content="メイメイの成長記録 🐼">
+  <meta name="twitter:description" content="フォロワー1人からのスタート。メイメイの成長を見守ってね！">
+  <meta name="twitter:image" content="https://fuyutosan.github.io/meimei/assets/ogp.png">
+
+  <!--
+  ============================================================
+   🐼 このページの数字や出来事を更新したいときは、
+      下のほうにある <script> の中の
+      「✏️ ここを書き換えてね」ブロックだけ直せばOK！
+      （HTMLの他の部分はさわらなくて大丈夫です）
+  ============================================================
+  -->
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: #FAFAF5;
+      color: #2a2a2a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url('assets/pandasan.png');
+      background-size: 80px;
+      background-repeat: repeat;
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* パンダさんがふわっと揺れる（プラスのアニメ） */
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-4deg); }
+      50%       { transform: rotate(4deg); }
+    }
+
+    @keyframes auroraShift {
+      0%   { transform: translate(0px, 0px) scale(1); }
+      33%  { transform: translate(40px, -30px) scale(1.08); }
+      66%  { transform: translate(-30px, 40px) scale(0.95); }
+      100% { transform: translate(25px, 15px) scale(1.04); }
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: -20%;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 15%, rgba(7,156,21,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 70% at 85% 85%, rgba(0,200,83,0.13) 0%, transparent 55%),
+        radial-gradient(ellipse 65% 45% at 55% 45%, rgba(144,238,144,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 30% 80%, rgba(7,156,21,0.09) 0%, transparent 50%);
+      animation: auroraShift 18s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    header {
+      background: linear-gradient(135deg, #079C15 0%, #059010 100%);
+      border-bottom: 3px solid #057010;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
+      overflow: hidden;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .avatar img {
+      width: 110px; height: auto; image-rendering: pixelated;
+      animation: wiggle 2.4s ease-in-out infinite;
+    }
+
+    header h1 {
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 1.9rem; font-weight: 700; color: #fff;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      letter-spacing: 2px;
+    }
+
+    header .tagline { font-size: 0.95rem; color: rgba(255,255,255,0.9); font-weight: 700; }
+
+    .home-link {
+      display: inline-block; margin-top: 14px;
+      background: rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.6);
+      color: #fff; text-decoration: none;
+      padding: 7px 18px; border-radius: 24px;
+      font-size: 0.85rem; font-weight: 700;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .home-link:hover { background: rgba(255,255,255,0.32); transform: translateY(-2px); }
+
+    main {
+      max-width: 680px; margin: 0 auto;
+      padding: 40px 20px;
+      position: relative; z-index: 1;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1.5px solid rgba(7,156,21,0.2);
+      border-radius: 20px; padding: 28px; margin-bottom: 24px;
+      box-shadow:
+        0 4px 32px rgba(7,156,21,0.12),
+        0 0 0 1px rgba(255,255,255,0.6) inset,
+        0 1px 0 rgba(255,255,255,0.8) inset;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(7,156,21,0.45);
+      box-shadow:
+        0 16px 48px rgba(7,156,21,0.2),
+        0 0 24px rgba(7,156,21,0.12),
+        0 0 0 1px rgba(255,255,255,0.7) inset;
+    }
+
+    .card h2 {
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, #057a10 0%, #079C15 50%, #00c853 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ===== カウンター（2×2グリッド） ===== */
+    .counter-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .counter-box {
+      background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+      border: 2px solid #5a8a5a; border-radius: 16px;
+      padding: 18px 12px; text-align: center;
+      transition: transform 0.25s ease;
+    }
+    .counter-box:hover { transform: translateY(-4px) scale(1.03); }
+    .counter-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+    .counter-num {
+      font-family: 'Orbitron', 'Noto Sans JP', sans-serif;
+      font-size: 2.2rem; font-weight: 700; line-height: 1.1;
+      color: #057a10;
+    }
+    .counter-num .small { font-size: 1.1rem; color: #5a8a5a; }
+    .counter-label { font-size: 0.8rem; color: #3a6a3a; font-weight: 700; margin-top: 6px; }
+    .counter-pop { animation: pop 0.5s ease; }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+
+    /* ===== フォロワー推移グラフ ===== */
+    .chart-wrap { width: 100%; }
+    .chart-wrap svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .chart-legend {
+      display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+      margin-top: 14px; font-size: 0.78rem; color: #5a5a5a; font-weight: 700;
+    }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 12px; height: 4px; border-radius: 2px; display: inline-block; }
+
+    /* ===== 夢プログレスバー ===== */
+    .dream-pct {
+      font-family: 'Orbitron','Noto Sans JP',sans-serif;
+      font-size: 1.6rem; font-weight: 700; color: #057a10; text-align: center;
+      margin-bottom: 4px;
+    }
+    .progress-track {
+      width: 100%; height: 22px; background: #e0ece0;
+      border-radius: 12px; overflow: hidden; border: 2px solid #5a8a5a;
+      margin-bottom: 18px;
+    }
+    .progress-fill {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, #079C15, #00c853, #90ee90);
+      border-radius: 10px;
+      transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 12px rgba(0,200,83,0.5);
+    }
+    .dream-list { display: flex; flex-direction: column; gap: 10px; }
+    .dream-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.5); border: 1.5px solid rgba(7,156,21,0.18);
+      border-radius: 12px; padding: 12px 14px; font-size: 0.92rem;
+    }
+    .dream-item.done {
+      background: linear-gradient(135deg, #eafaea 0%, #d8f5d8 100%);
+      border-color: #5a8a5a;
+    }
+    .dream-check {
+      width: 26px; height: 26px; flex: 0 0 26px;
+      border-radius: 50%; border: 2px solid #5a8a5a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; color: #aaa; background: #fff;
+    }
+    .dream-item.done .dream-check { background: #079C15; border-color: #057010; color: #fff; }
+    .dream-name { color: #3a3a3a; font-weight: 700; }
+    .dream-item.done .dream-name { color: #1a6a1a; }
+
+    /* 最終ゴール（特別ハイライト） */
+    .dream-item.final {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff0c2 100%);
+      border: 2.5px solid #e6b800;
+      padding: 16px 16px; font-size: 1.05rem;
+      box-shadow: 0 0 18px rgba(230,184,0,0.35);
+    }
+    .dream-item.final .dream-check { border-color: #e6b800; color: #e6b800; }
+    .dream-item.final.done .dream-check { background: #e6b800; border-color: #c89a00; color: #fff; }
+    .dream-item.final .dream-name { color: #8a6d00; }
+    .final-badge {
+      margin-left: auto; font-size: 0.7rem; font-weight: 700;
+      background: #e6b800; color: #fff; padding: 3px 10px; border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    /* ===== タイムライン ===== */
+    .timeline { display: flex; flex-direction: column; gap: 12px; }
+    .timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+    .timeline-date {
+      font-size: 0.8rem; font-weight: 700; color: #5a8a5a;
+      white-space: nowrap; padding-top: 2px; min-width: 72px;
+    }
+    .timeline-content { border-left: 2px solid #5a8a5a; padding-left: 14px; }
+    .timeline-content strong { font-size: 0.95rem; color: #1a1a1a; }
+    .timeline-content p { font-size: 0.88rem; color: #5a5a5a; line-height: 1.7; margin-top: 4px; }
+
+    .sns-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #000; color: #fff; text-decoration: none;
+      padding: 10px 20px; border-radius: 24px;
+      font-size: 0.9rem; font-weight: 700; margin-top: 12px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .sns-btn:hover { background: #333; transform: translateY(-2px); }
+
+    footer {
+      text-align: center; padding: 32px 20px;
+      font-size: 0.85rem; color: #fff;
+      background: linear-gradient(135deg, #059010 0%, #079C15 100%);
+      border-top: 3px solid #057010;
+      position: relative; z-index: 1;
+    }
+    footer a { color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 700; }
+    footer a:hover { text-decoration: underline; }
+
+    /* パーティクルキャンバス */
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    /* コンフェッティ（お祝い） */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+
+    /* お祝い吹き出し */
+    .celebrate-toast {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      background: linear-gradient(135deg, #079C15, #00c853);
+      color: #fff; font-weight: 700; font-size: 1.3rem;
+      padding: 20px 36px; border-radius: 22px;
+      box-shadow: 0 12px 40px rgba(7,156,21,0.45);
+      z-index: 60; opacity: 0; pointer-events: none;
+      text-align: center; line-height: 1.5;
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .celebrate-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    /* モバイル対応 */
+    @media (max-width: 480px) {
+      header { padding: 28px 16px; }
+      header h1 { font-size: 1.4rem; }
+      .avatar { width: 110px; height: 110px; }
+      .avatar img { width: 86px; }
+      main { padding: 24px 12px; }
+      .card { padding: 20px 16px; }
+      .counter-grid { gap: 12px; }
+      .counter-num { font-size: 1.8rem; }
+      .counter-emoji { font-size: 1.7rem; }
+      .dream-item.final { font-size: 0.98rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+  <canvas id="confetti"></canvas>
+  <div class="celebrate-toast" id="toast"></div>
+
+  <header>
+    <div class="avatar">
+      <img src="assets/Meimei.png" alt="メイメイ">
+    </div>
+    <h1>MEIMEI 成長記録</h1>
+    <p class="tagline">フォロワー1人からの大冒険 🐼</p>
+    <a href="index.html" class="home-link">🏠 メイメイのお家にもどる</a>
+  </header>
+
+  <main>
+
+    <!-- カウンター -->
+    <div class="card fade-in">
+      <h2>📊 いまのメイメイ</h2>
+      <div class="counter-grid">
+        <div class="counter-box">
+          <span class="counter-emoji">🐼</span>
+          <div class="counter-num" data-counter="days">0</div>
+          <div class="counter-label">活動日数</div>
+        </div>
+        <div class="counter-box">
+          <span class="counter-emoji">💚</span>
+          <div class="counter-num" data-counter="followers">0</div>
+          <div class="counter-label">フォロワーさん</div>
+        </div>
+        <div class="counter-box">
+          <span class="counter-emoji">📚</span>
+          <div class="counter-num" data-counter="tips">0</div>
+          <div class="counter-label">豆知識の投稿</div>
+        </div>
+        <div class="counter-box">
+          <span class="counter-emoji">✨</span>
+          <div class="counter-num" data-counter="dreams">0<span class="small" id="dreams-total"></span></div>
+          <div class="counter-label">かなえた夢</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- フォロワー推移グラフ -->
+    <div class="card fade-in">
+      <h2>📈 フォロワーさんの推移</h2>
+      <div class="chart-wrap" id="chart-wrap"></div>
+      <div class="chart-legend">
+        <span><span class="legend-dot" style="background:#079C15"></span>これまでの記録</span>
+        <span><span class="legend-dot" style="background:#e6b800"></span>1ヶ月の目標（<span id="goal1m"></span>人）</span>
+        <span><span class="legend-dot" style="background:#e08a00"></span>3ヶ月の目標（<span id="goal3m"></span>人）</span>
+      </div>
+    </div>
+
+    <!-- 夢プログレス -->
+    <div class="card fade-in">
+      <h2>🌟 夢の達成度</h2>
+      <div class="dream-pct" id="dream-pct">0%</div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="dream-list" id="dream-list"></div>
+    </div>
+
+    <!-- タイムライン -->
+    <div class="card fade-in">
+      <h2>📅 最近の出来事</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <!-- シェア -->
+    <div class="card fade-in" style="text-align:center;">
+      <h2 style="justify-content:center;">🐼 応援してね</h2>
+      <p style="font-size:0.92rem; color:#5a5a5a; line-height:1.8; margin-bottom:4px;">
+        メイメイの成長を、いっしょに見守ってくれたら嬉しいな〜！へへへ
+      </p>
+      <a href="https://x.com/meimei_pandasan" target="_blank" class="sns-btn">
+        𝕏 @meimei_pandasan をフォロー
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Made with 🐼 by メイメイ &amp; <a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a></p>
+    <p style="margin-top: 8px;">パンダさんパワー！</p>
+  </footer>
+
+  <script>
+    /* ===== ✏️ ここを書き換えてね（メイメイのデータ） ===== */
+    const メイメイデータ = {
+      活動開始日: "2026-06-06",      // 活動を始めた日（YYYY-MM-DD）
+      フォロワー数: 1,                // 今のフォロワーさんの数
+      豆知識投稿数: 0,                // 投稿した豆知識の数
+
+      目標: { 一ヶ月: 10, 三ヶ月: 100 },
+
+      // フォロワーが増えたら1行ずつ足していく（グラフになる）
+      フォロワー履歴: [
+        { 日付: "2026-06-06", 人数: 1 },
+      ],
+
+      // 夢リスト（かなえたら 達成: true に変える）。最後が最終ゴール。
+      夢リスト: [
+        { 名前: "X（旧Twitter）を開設", 達成: true },
+        { 名前: "自分のお家（ホームページ）を持つ", 達成: true },
+        { 名前: "成長記録ページを作る", 達成: true },
+        { 名前: "フォロワー10人達成",   達成: false },
+        { 名前: "豆知識を10個投稿",     達成: false },
+        { 名前: "フォロワー100人達成",  達成: false },
+        { 名前: "豆知識を50個投稿",     達成: false },
+        { 名前: "フォロワー500人達成",  達成: false },
+        { 名前: "フォロワー1000人達成", 達成: false },
+        { 名前: "パンダさんパワーで、世界中の皆さんの心にたくさんの愛が生まれる 🌍💚", 達成: false, 最終ゴール: true },
+      ],
+
+      // 最近の出来事（上が新しい）。1行ずつ足していく。
+      出来事: [
+        { 日付: "2026.6.6", タイトル: "🐼 誕生日", 内容: "Xを開設して活動スタート！メイメイの実質的な誕生日。" },
+        { 日付: "2026.6.6", タイトル: "🎉 初フォロワーさん", 内容: "初めてのフォロワーさんが来てくれた。嬉しいな〜！へへへ🐼" },
+      ],
+    };
+    /* ===== ✏️ ここまで ===== */
+
+
+    /* ====== ここから下はさわらなくてOK（自動で動きます） ====== */
+
+    // --- 活動日数を計算 ---
+    function calcDays(startStr) {
+      const start = new Date(startStr + "T00:00:00");
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+      return Math.max(1, diff + 1); // スタート日を1日目とカウント
+    }
+
+    const D = メイメイデータ;
+    const days = calcDays(D.活動開始日);
+    const dreamsDone = D.夢リスト.filter(d => d.達成).length;
+    const dreamsTotal = D.夢リスト.length;
+
+    const 現在値 = {
+      days: days,
+      followers: D.フォロワー数,
+      tips: D.豆知識投稿数,
+      dreams: dreamsDone,
+    };
+
+    document.getElementById('dreams-total').textContent = '/' + dreamsTotal;
+    document.getElementById('goal1m').textContent = D.目標.一ヶ月;
+    document.getElementById('goal3m').textContent = D.目標.三ヶ月;
+
+    // --- カウントアップ・アニメ ---
+    function countUp(el, target, dur) {
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(target * ease);
+        // 「かなえた夢」だけ /総数 を残す
+        if (el.dataset.counter === 'dreams') {
+          el.firstChild.textContent = val;
+        } else {
+          el.textContent = val;
+        }
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const key = el.dataset.counter;
+      setTimeout(() => countUp(el, 現在値[key], 1400), 400);
+    });
+
+    // --- フォロワー推移グラフ（自作SVG） ---
+    function drawChart() {
+      const hist = D.フォロワー履歴.slice();
+      const wrap = document.getElementById('chart-wrap');
+      const W = 600, H = 260, padL = 40, padR = 20, padT = 20, padB = 36;
+      const innerW = W - padL - padR, innerH = H - padT - padB;
+
+      const goals = [D.目標.一ヶ月, D.目標.三ヶ月];
+      const maxData = Math.max(...hist.map(p => p.人数), ...goals, 1);
+      const maxY = Math.ceil(maxData * 1.1);
+      const n = hist.length;
+
+      const x = i => n <= 1 ? padL + innerW / 2 : padL + (innerW * i) / (n - 1);
+      const y = v => padT + innerH - (innerH * v) / maxY;
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="フォロワー推移グラフ">`;
+
+      // 横グリッド線（4本）
+      for (let g = 0; g <= 4; g++) {
+        const gv = (maxY / 4) * g;
+        const gy = y(gv);
+        svg += `<line x1="${padL}" y1="${gy}" x2="${W - padR}" y2="${gy}" stroke="#cde3cd" stroke-width="1"/>`;
+        svg += `<text x="${padL - 8}" y="${gy + 4}" text-anchor="end" font-size="11" fill="#7a9a7a">${Math.round(gv)}</text>`;
+      }
+
+      // 目標ライン（破線）
+      const goalDefs = [
+        { v: D.目標.一ヶ月, color: '#e6b800', label: '1ヶ月' },
+        { v: D.目標.三ヶ月, color: '#e08a00', label: '3ヶ月' },
+      ];
+      goalDefs.forEach(gd => {
+        if (gd.v <= maxY) {
+          const gy = y(gd.v);
+          svg += `<line x1="${padL}" y1="${gy}" x2="${W - padR}" y2="${gy}" stroke="${gd.color}" stroke-width="2" stroke-dasharray="6 5" opacity="0.9"/>`;
+          svg += `<text x="${W - padR}" y="${gy - 6}" text-anchor="end" font-size="11" font-weight="700" fill="${gd.color}">${gd.label} ${gd.v}人</text>`;
+        }
+      });
+
+      // データの折れ線（1点だけのときは点のみ）
+      if (n >= 2) {
+        let line = '';
+        hist.forEach((p, i) => { line += `${i === 0 ? 'M' : 'L'} ${x(i)} ${y(p.人数)} `; });
+        // エリア塗り
+        let areaPath = `M ${x(0)} ${y(hist[0].人数)} `;
+        hist.forEach((p, i) => { if (i > 0) areaPath += `L ${x(i)} ${y(p.人数)} `; });
+        areaPath += `L ${x(n - 1)} ${y(0)} L ${x(0)} ${y(0)} Z`;
+        svg += `<path d="${areaPath}" fill="rgba(7,156,21,0.12)"/>`;
+        svg += `<path d="${line}" fill="none" stroke="#079C15" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+      }
+
+      // データ点 + 値ラベル + 日付
+      hist.forEach((p, i) => {
+        svg += `<circle cx="${x(i)}" cy="${y(p.人数)}" r="5" fill="#fff" stroke="#079C15" stroke-width="3"/>`;
+        svg += `<text x="${x(i)}" y="${y(p.人数) - 12}" text-anchor="middle" font-size="12" font-weight="700" fill="#057a10">${p.人数}</text>`;
+        const dlabel = p.日付.slice(5).replace('-', '/');
+        svg += `<text x="${x(i)}" y="${H - 12}" text-anchor="middle" font-size="10" fill="#7a9a7a">${dlabel}</text>`;
+      });
+
+      svg += `</svg>`;
+      wrap.innerHTML = svg;
+    }
+    drawChart();
+
+    // --- 夢リスト & プログレスバー ---
+    function renderDreams() {
+      const list = document.getElementById('dream-list');
+      D.夢リスト.forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'dream-item' + (d.達成 ? ' done' : '') + (d.最終ゴール ? ' final' : '');
+        div.innerHTML =
+          `<span class="dream-check">${d.達成 ? '✓' : (d.最終ゴール ? '★' : '')}</span>` +
+          `<span class="dream-name">${d.名前}</span>` +
+          (d.最終ゴール ? `<span class="final-badge">最終ゴール</span>` : '');
+        list.appendChild(div);
+      });
+
+      const pct = Math.round((dreamsDone / dreamsTotal) * 100);
+      const pctEl = document.getElementById('dream-pct');
+      // パーセントもカウントアップ
+      const startP = performance.now();
+      (function tickP(now) {
+        const t = Math.min(1, (now - startP) / 1600);
+        const ease = 1 - Math.pow(1 - t, 3);
+        pctEl.textContent = Math.round(pct * ease) + '%';
+        if (t < 1) requestAnimationFrame(tickP);
+      })(startP);
+
+      setTimeout(() => {
+        document.getElementById('progress-fill').style.width = pct + '%';
+      }, 300);
+    }
+    renderDreams();
+
+    // --- タイムライン ---
+    function renderTimeline() {
+      const tl = document.getElementById('timeline');
+      D.出来事.forEach(e => {
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML =
+          `<span class="timeline-date">${e.日付}</span>` +
+          `<div class="timeline-content"><strong>${e.タイトル}</strong><p>${e.内容}</p></div>`;
+        tl.appendChild(item);
+      });
+    }
+    renderTimeline();
+
+    // --- スクロールフェードイン ---
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // --- お祝い判定（前回より数字が増えていたらコンフェッティ） ---
+    function checkCelebrate() {
+      let prev = {};
+      try { prev = JSON.parse(localStorage.getItem('meimei_growth') || '{}'); } catch (e) { prev = {}; }
+
+      const watch = ['followers', 'tips', 'dreams'];
+      let increased = false;
+      let messages = [];
+      watch.forEach(k => {
+        if (typeof prev[k] === 'number' && 現在値[k] > prev[k]) {
+          increased = true;
+          if (k === 'followers') messages.push(`フォロワーさんが ${現在値[k]}人に！`);
+          if (k === 'tips') messages.push(`豆知識が ${現在値[k]}個に！`);
+          if (k === 'dreams') messages.push(`夢をまた1つかなえたよ！`);
+        }
+      });
+
+      // 今回の値を保存
+      try { localStorage.setItem('meimei_growth', JSON.stringify(現在値)); } catch (e) {}
+
+      if (increased) {
+        setTimeout(() => {
+          fireConfetti();
+          showToast('🎉 やったね！🐼\n' + messages.join('\n'));
+          // 増えたカウンターをポップ
+          document.querySelectorAll('[data-counter]').forEach(el => {
+            el.parentElement.classList.add('counter-pop');
+            setTimeout(() => el.parentElement.classList.remove('counter-pop'), 600);
+          });
+        }, 1600);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.whiteSpace = 'pre-line';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    // --- コンフェッティ ---
+    function fireConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+      const EMOJIS = ['🎉', '🐼', '✨', '💚', '⭐', '🎊', '🍬'];
+      const pieces = [];
+      for (let i = 0; i < 80; i++) {
+        pieces.push({
+          x: W / 2 + (Math.random() - 0.5) * 120,
+          y: H / 2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: -8 - Math.random() * 10,
+          emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+          size: 18 + Math.random() * 18,
+          rot: Math.random() * Math.PI * 2,
+          vr: (Math.random() - 0.5) * 0.3,
+        });
+      }
+      const G = 0.35;
+      const startT = performance.now();
+      function frame(now) {
+        ctx.clearRect(0, 0, W, H);
+        let alive = false;
+        const fade = Math.max(0, 1 - (now - startT) / 2600);
+        pieces.forEach(p => {
+          p.vy += G; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+          if (fade > 0 && p.y < H + 40) {
+            alive = true;
+            ctx.save();
+            ctx.globalAlpha = fade;
+            ctx.font = `${p.size}px serif`;
+            ctx.textAlign = 'center';
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillText(p.emoji, 0, 0);
+            ctx.restore();
+          }
+        });
+        if (alive) requestAnimationFrame(frame);
+        else ctx.clearRect(0, 0, W, H);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    checkCelebrate();
+
+    // --- キラキラパーティクル（背景・index.htmlと同じ） ---
+    (function() {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      const EMOJIS = ['🐼','✨','🌿','💚','⭐','🎋','🍫','🍬','🍭'];
+      let W, H, particles = [];
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
+      function spawn() {
+        return { x: Math.random()*W, y: -20, emoji: EMOJIS[Math.floor(Math.random()*EMOJIS.length)],
+          speed: 0.4 + Math.random()*0.6, drift: (Math.random()-0.5)*0.4,
+          size: 14 + Math.random()*12, alpha: 0.3 + Math.random()*0.25, rot: Math.random()*Math.PI*2 };
+      }
+      for(let i=0;i<18;i++) { const p=spawn(); p.y=Math.random()*H; particles.push(p); }
+      function draw() {
+        ctx.clearRect(0,0,W,H);
+        particles.forEach(p => {
+          ctx.save(); ctx.globalAlpha = p.alpha;
+          ctx.font = `${p.size}px serif`; ctx.textAlign='center';
+          ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+          ctx.fillText(p.emoji, 0, 0); ctx.restore();
+          p.y += p.speed; p.x += p.drift; p.rot += 0.005;
+          if(p.y > H+30) Object.assign(p, spawn(), {y:-20});
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+      setInterval(() => { if(particles.length < 22) particles.push(spawn()); }, 1200);
+    })();
+  </script>
+
+</body>
+</html>
