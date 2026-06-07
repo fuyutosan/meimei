@@ -597,17 +597,33 @@
     }
     renderDreams();
 
-    // --- タイムライン ---
+    // --- タイムライン（最新3件だけ表示。残りは折りたたみ） ---
     function renderTimeline() {
       const tl = document.getElementById('timeline');
-      D.出来事.forEach(e => {
+      const VISIBLE = 3; // 最初から見せる件数
+      const makeItem = (e) => {
         const item = document.createElement('div');
         item.className = 'timeline-item';
         item.innerHTML =
           `<span class="timeline-date">${e.日付}</span>` +
           `<div class="timeline-content"><strong>${e.タイトル}</strong><p>${e.内容}</p></div>`;
-        tl.appendChild(item);
-      });
+        return item;
+      };
+      const items = D.出来事;
+      items.slice(0, VISIBLE).forEach(e => tl.appendChild(makeItem(e)));
+      if (items.length > VISIBLE) {
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        summary.textContent = `▼ もっと前のあゆみを見る（あと${items.length - VISIBLE}件）`;
+        summary.style.cssText = 'cursor:pointer; color:#079C15; font-weight:700; font-size:0.92rem; margin-top:14px; list-style:none;';
+        details.appendChild(summary);
+        const moreWrap = document.createElement('div');
+        moreWrap.className = 'timeline';
+        moreWrap.style.marginTop = '12px';
+        items.slice(VISIBLE).forEach(e => moreWrap.appendChild(makeItem(e)));
+        details.appendChild(moreWrap);
+        tl.parentNode.appendChild(details);
+      }
     }
     renderTimeline();
 
