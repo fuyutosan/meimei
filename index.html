@@ -27,7 +27,10 @@
       background-color: #FAFAF5;
       color: #2a2a2a;
       min-height: 100vh;
+      cursor: none;
     }
+
+    @media (hover: none) { body { cursor: auto; } }
 
     body::before {
       content: '';
@@ -39,6 +42,12 @@
       opacity: 0.07;
       pointer-events: none;
       z-index: 0;
+      animation: scrollBg 14s linear infinite;
+    }
+
+    @keyframes scrollBg {
+      0%   { background-position: 0 0; }
+      100% { background-position: 80px 80px; }
     }
 
     @keyframes float {
@@ -248,6 +257,33 @@
     /* パーティクルキャンバス */
     #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
+    /* カーソル追従パンダさん */
+    #cursor-panda {
+      position: fixed;
+      width: 38px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      opacity: 0.88;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+      transition: left 0.07s, top 0.07s;
+      image-rendering: pixelated;
+    }
+    @media (hover: none) { #cursor-panda { display: none !important; } }
+
+    /* ふわふわ固定パンダさん */
+    .float-panda-fixed {
+      position: fixed;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.52;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+      image-rendering: pixelated;
+    }
+    @keyframes fpBob  { 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-18px) rotate(6deg)} }
+    @keyframes fpBobR { 0%,100%{transform:translateY(0) rotate(6deg)}  50%{transform:translateY(-22px) rotate(-4deg)} }
+    @keyframes fpSlow { 0%,100%{transform:translateY(0) rotate(3deg) scale(1)} 50%{transform:translateY(-14px) rotate(-5deg) scale(1.05)} }
+
     /* パンダパワー日付 */
     .power-date { font-size: 0.78rem; color: #5a8a5a; text-align: center; margin-bottom: 8px; font-weight: 700; }
 
@@ -265,6 +301,17 @@
 <body>
 
   <canvas id="particles"></canvas>
+
+  <!-- カーソル追従パンダさん -->
+  <img id="cursor-panda" src="assets/pandasan.png" alt="">
+
+  <!-- ふわふわ固定パンダさん3匹 -->
+  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+    style="width:60px; left:6px; top:20%; animation:fpBob 4.4s ease-in-out infinite;">
+  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+    style="width:46px; right:4px; top:44%; animation:fpBobR 5.2s ease-in-out infinite;">
+  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+    style="width:54px; left:3px; top:70%; animation:fpSlow 6.6s ease-in-out infinite;">
 
   <header>
     <div class="avatar">
@@ -469,6 +516,37 @@
       }
       draw();
       setInterval(() => { if(particles.length < 22) particles.push(spawn()); }, 1200);
+    })();
+
+    // カーソル追従パンダさん
+    (function(){
+      const el = document.getElementById('cursor-panda');
+      if (!el || window.matchMedia('(hover: none)').matches) return;
+      document.addEventListener('mousemove', e => {
+        el.style.left = e.clientX + 'px';
+        el.style.top  = e.clientY + 'px';
+      });
+    })();
+
+    // クリックでハート＆竹が飛び散る
+    (function(){
+      const emojis = ['💚','🎋','🐼','🌿','✨','💚','🎋','⭐'];
+      document.addEventListener('click', e => {
+        for (let i = 0; i < 9; i++) {
+          const el = document.createElement('span');
+          el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const size = 14 + Math.random() * 18;
+          el.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;font-size:' + size + 'px;pointer-events:none;z-index:9998;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;';
+          document.body.appendChild(el);
+          const angle = Math.random() * Math.PI * 2;
+          const dist  = 35 + Math.random() * 70;
+          requestAnimationFrame(() => {
+            el.style.transform = 'translate(' + (Math.cos(angle)*dist) + 'px,' + (Math.sin(angle)*dist - 40) + 'px)';
+            el.style.opacity = '0';
+          });
+          setTimeout(() => el.remove(), 750);
+        }
+      });
     })();
   </script>
 
