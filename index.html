@@ -18,12 +18,12 @@
   <meta name="twitter:image" content="https://fuyutosan.github.io/meimei/assets/ogp.png">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Noto Sans JP', sans-serif;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
       background-color: #FAFAF5;
       color: #2a2a2a;
       min-height: 100vh;
@@ -195,6 +195,7 @@
     }
 
     .card {
+      position: relative;
       background: rgba(255,255,255,0.55);
       backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1.5px solid rgba(7,156,21,0.2);
@@ -213,6 +214,240 @@
         0 16px 48px rgba(7,156,21,0.2),
         0 0 24px rgba(7,156,21,0.12),
         0 0 0 1px rgba(255,255,255,0.7) inset;
+    }
+
+    /* カードのパンダさん耳（ホバーでぴくぴく） */
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      top: -17px;
+      width: 36px; height: 18px;
+      background: #3a3a3a;
+      border-radius: 20px 20px 0 0;
+      transition: transform 0.25s ease;
+    }
+    .card::before { left: 26px; transform-origin: bottom center; }
+    .card::after  { right: 26px; transform-origin: bottom center; }
+    .card:hover::before { transform: rotate(-10deg); }
+    .card:hover::after  { transform: rotate(10deg); }
+
+    /* スタンプカード */
+    .stamp-msg { text-align: center; font-size: 0.95rem; color: #3a3a3a; line-height: 1.8; margin-bottom: 16px; }
+    .stamp-grid { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .stamp {
+      position: relative;
+      width: 46px; height: 46px;
+      border: 2px dashed #9bc39b; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: #f7fbf7;
+    }
+    .stamp img {
+      width: 84%; height: 84%;
+      object-fit: contain;
+      transform: rotate(var(--tilt, 0deg));
+    }
+    .stamp.filled {
+      border: 2px solid #079C15;
+      background: #e8f5e8;
+      box-shadow: 0 2px 6px rgba(7,156,21,0.2);
+    }
+    /* 押せる枠（今日のスタンプはここ！光って待ってる） */
+    .stamp.pressable {
+      cursor: pointer;
+      border: 2px dashed #079C15;
+      background: #eafbea;
+      font-size: 18px;
+      animation: pressablePulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pressablePulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(7,156,21,0.35); }
+      50%      { transform: scale(1.12); box-shadow: 0 0 0 9px rgba(7,156,21,0); }
+    }
+    /* 「ここを押してね！」の案内ラベル（ぴょこぴょこ跳ねる） */
+    .stamp.pressable::before {
+      content: 'ここを押してね！';
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      background: #079C15;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 14px;
+      white-space: nowrap;
+      box-shadow: 0 3px 10px rgba(7,156,21,0.35);
+      animation: hintBounce 1s ease-in-out infinite;
+      z-index: 3;
+    }
+    .stamp.pressable::after {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      border: 6px solid transparent;
+      border-top-color: #079C15;
+      animation: hintBounce 1s ease-in-out infinite;
+      z-index: 3;
+    }
+    @keyframes hintBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-5px); }
+    }
+    /* ラベルの分だけ上に余白を空ける */
+    .stamp-grid.has-hint { margin-top: 46px; }
+    /* 肉球ハンコが「ぺったん！」と押される */
+    .paw-press {
+      position: fixed;
+      width: 110px;
+      pointer-events: none;
+      z-index: 9999;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+      animation: pawSlam 0.9s ease-out forwards;
+    }
+    @keyframes pawSlam {
+      0%   { transform: translate(-50%,-50%) scale(2.4) rotate(-8deg); opacity: 0; }
+      35%  { transform: translate(-50%,-50%) scale(0.92) rotate(0deg); opacity: 1; }
+      60%  { transform: translate(-50%,-50%) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(-50%,-50%) scale(1.05) rotate(0deg); opacity: 0; }
+    }
+    /* 押した瞬間：上からドーン（ハンコ演出） */
+    .stamp.pressed img {
+      animation: stampPress 0.7s cubic-bezier(.34,1.3,.5,1);
+    }
+    @keyframes stampPress {
+      0%   { transform: translateY(-70px) scale(2.8) rotate(-12deg); opacity: 0; }
+      45%  { transform: translateY(0) scale(0.78, 0.66) rotate(var(--tilt, 0deg)); opacity: 1; }
+      70%  { transform: scale(1.18, 1.1) rotate(var(--tilt, 0deg)); }
+      100% { transform: scale(1) rotate(var(--tilt, 0deg)); }
+    }
+    .stamp.pressed::after {
+      content: '';
+      position: absolute; inset: -7px;
+      border-radius: 50%;
+      border: 3px solid #079C15;
+      opacity: 0; pointer-events: none;
+      animation: stampRing 0.55s ease-out 0.38s;
+    }
+    @keyframes stampRing {
+      0%   { transform: scale(0.55); opacity: 0.9; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    @keyframes stampPop {
+      0%   { transform: scale(2.2) rotate(-18deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .stamp-note { text-align: center; font-size: 0.82rem; color: #5a8a5a; margin-top: 14px; font-weight: 700; }
+
+    /* パンダさんおみくじ */
+    .omikuji-box { text-align: center; }
+    .omikuji-panda { width: 84px; display: inline-block; margin-bottom: 12px; image-rendering: pixelated; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+    .omikuji-panda.shaking { animation: omikujiShake 0.9s ease-in-out; }
+    @keyframes omikujiShake {
+      0%, 100% { transform: rotate(0deg); }
+      15% { transform: rotate(-14deg) translateY(-4px); }
+      30% { transform: rotate(12deg); }
+      45% { transform: rotate(-12deg) translateY(-6px); }
+      60% { transform: rotate(10deg); }
+      75% { transform: rotate(-8deg) translateY(-3px); }
+    }
+    .omikuji-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #079C15, #00c853);
+      color: #fff; border: none; cursor: pointer;
+      padding: 15px 34px; border-radius: 28px;
+      font-size: 1.05rem; font-weight: 700;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      box-shadow: 0 4px 14px rgba(7,156,21,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .omikuji-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(7,156,21,0.4); }
+    .omikuji-btn:disabled { background: #b9d8b9; box-shadow: none; cursor: default; }
+    .omikuji-result {
+      margin-top: 18px;
+      background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+      border: 2px solid #5a8a5a; border-radius: 16px;
+      padding: 18px 16px;
+      animation: stampPop 0.5s cubic-bezier(.3,1.6,.5,1);
+    }
+    .omikuji-result .omikuji-img {
+      width: 150px; border-radius: 16px;
+      border: 3px solid #e8c84a;
+      box-shadow: 0 4px 16px rgba(232,200,74,0.45);
+      margin-bottom: 10px;
+    }
+    .omikuji-result .rank { font-size: 1.5rem; font-weight: 700; color: #057a10; margin-bottom: 8px; }
+    .omikuji-result .rank.special {
+      background: linear-gradient(90deg, #079C15, #00c853, #ffb7c5, #079C15);
+      background-size: 300% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: rainbowSlide 2.5s linear infinite;
+    }
+    @keyframes rainbowSlide { 0% { background-position: 0% 0; } 100% { background-position: 300% 0; } }
+    .omikuji-result .msg { font-size: 0.95rem; line-height: 1.9; color: #2a2a2a; }
+    .omikuji-result .lucky { font-size: 0.85rem; color: #5a8a5a; font-weight: 700; margin-top: 8px; }
+
+    /* おみくじカットイン演出 */
+    #cutin {
+      position: fixed; inset: 0; z-index: 10000;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(4, 60, 10, 0.45);
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+      overflow: hidden;
+    }
+    #cutin.show { display: flex; animation: cutinFade 0.2s ease-out; }
+    #cutin.leaving { animation: cutinOut 0.25s ease-in forwards; }
+    @keyframes cutinFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes cutinOut { to { opacity: 0; } }
+    .cutin-band {
+      position: absolute; left: -10%; right: -10%; height: 180px;
+      transform: rotate(-5deg);
+      background:
+        repeating-linear-gradient(115deg, rgba(255,255,255,0.16) 0 14px, transparent 14px 42px),
+        linear-gradient(135deg, #079C15, #00c853);
+      box-shadow: 0 0 50px rgba(0,0,0,0.35);
+      animation: bandIn 0.28s cubic-bezier(.2,.9,.3,1);
+    }
+    @keyframes bandIn {
+      from { transform: rotate(-5deg) scaleX(0); }
+      to   { transform: rotate(-5deg) scaleX(1); }
+    }
+    .cutin-inner { position: relative; text-align: center; }
+    .cutin-panda {
+      display: inline-block; width: 120px;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+      animation: cutinDash 0.6s cubic-bezier(.2,.8,.35,1),
+                 omikujiShake 0.9s ease-in-out 0.65s;
+    }
+    @keyframes cutinDash {
+      from { transform: translateX(-70vw) rotate(-360deg); }
+      to   { transform: translateX(0) rotate(0deg); }
+    }
+    .cutin-text {
+      color: #fff; font-weight: 700; font-size: 1.15rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      letter-spacing: 2px;
+      animation: cutinFade 0.4s ease-out 0.5s backwards;
+    }
+
+    /* なでなでカウンター */
+    .nade-count {
+      font-size: 0.82rem; color: rgba(255,255,255,0.85); font-weight: 700;
+      margin-top: 10px; min-height: 1.4em;
+      opacity: 0;
+      animation: riseUp 0.7s ease-out 3.7s forwards;
+    }
+
+    /* パンダさんレイン */
+    .panda-rain-drop {
+      position: fixed; top: -50px;
+      pointer-events: none; z-index: 9997;
+      animation: pandaFall linear forwards;
+    }
+    @keyframes pandaFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
     }
 
     .card h2 {
@@ -374,6 +609,15 @@
 
   <canvas id="particles"></canvas>
 
+  <!-- おみくじカットイン -->
+  <div id="cutin">
+    <div class="cutin-band"></div>
+    <div class="cutin-inner">
+      <img class="cutin-panda" src="assets/pandasan.png" alt="パンダさん">
+      <p class="cutin-text">パンダさんが占っています…</p>
+    </div>
+  </div>
+
   <!-- カーソル追従パンダさん -->
   <img id="cursor-panda" src="assets/pandasan.png" alt="">
 
@@ -395,9 +639,17 @@
     </div>
     <h1>MEIMEI</h1>
     <p class="tagline" id="tagline"></p>
+    <p class="nade-count" id="nade-count">🐼 メイメイをクリックしてなでてね</p>
   </header>
 
   <main>
+
+    <div class="card fade-in">
+      <h2>🎫 あそびに来てくれてありがとうスタンプ</h2>
+      <p class="stamp-msg" id="stamp-msg"></p>
+      <div class="stamp-grid" id="stamp-grid"></div>
+      <p class="stamp-note" id="stamp-note"></p>
+    </div>
 
     <div class="card fade-in">
       <h2>🐼 今日のパンダさんパワー</h2>
@@ -407,6 +659,19 @@
       </div>
       <div class="panda-speaker">
         <img src="assets/panda-face.png" alt="パンダさん">
+      </div>
+    </div>
+
+    <div class="card fade-in">
+      <h2>🎋 パンダさんおみくじ</h2>
+      <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:16px; text-align:center;">
+        今日の運勢をパンダさんが占うよ（1日1回）。<br>
+        大丈夫、パンダさんのおみくじに凶はありません🐼
+      </p>
+      <div class="omikuji-box">
+        <img class="omikuji-panda" id="omikuji-panda" src="assets/pandasan.png" alt="パンダさん"><br>
+        <button class="omikuji-btn" id="omikuji-btn">🎋 おみくじを引く</button>
+        <div id="omikuji-result"></div>
       </div>
     </div>
 
@@ -472,6 +737,13 @@
       <h2>📅 メイメイのヒストリー</h2>
       <div class="timeline">
         <div class="timeline-item">
+          <span class="timeline-date">2026.7.3</span>
+          <div class="timeline-content">
+            <strong>🏠 お家を大リフォーム</strong>
+            <p>スタンプカード・パンダさんおみくじ・なでなでカウンターが仲間入り！カードにはパンダさんの耳が生えたよ🐼</p>
+          </div>
+        </div>
+        <div class="timeline-item">
           <span class="timeline-date">2026.7.1</span>
           <div class="timeline-content">
             <strong>🎓 愛生博士クイズをつくった</strong>
@@ -536,7 +808,7 @@
 
   <footer>
     <p>Made with 🐼 by メイメイ &amp; <a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a></p>
-    <p style="margin-top: 8px;">パンダさんパワー！</p>
+    <p style="margin-top: 8px;"><span id="footer-power" style="cursor:pointer;" title="押すといいことあるかも？">パンダさんパワー！</span></p>
   </footer>
 
   <script>
@@ -568,21 +840,53 @@
     document.getElementById('power-date').textContent =
       `${today.getFullYear()}年${today.getMonth()+1}月${today.getDate()}日のパンダさんパワー 🐼`;
 
-    // タイピングアニメーション
+    // タイピングアニメーション（時間帯であいさつが変わるよ）
     const tagline = document.getElementById('tagline');
-    const text = 'パンダさんパワーをあなたに 🐼';
+    const hour = today.getHours();
+    let text;
+    if (hour >= 5 && hour < 10)       text = 'おはようございます！今日もパンダさんパワー🐼';
+    else if (hour >= 10 && hour < 17) text = 'パンダさんパワーをあなたに 🐼';
+    else if (hour >= 17 && hour < 22) text = '今日もおつかれさま。ゆっくりしていってね🐼';
+    else                              text = '夜ふかしさん、いらっしゃい。おだやかな夜を🐼';
     let i = 0;
     function type() {
       if (i < text.length) { tagline.textContent += text[i++]; setTimeout(type, 80); }
     }
     setTimeout(type, 3700);
 
-    // メイメイをクリックするとぴょこん＆キラキラ
+    // パンダさんレイン（ここぞという時のご褒美演出）
+    function pandaRain(count) {
+      const emojis = ['🐼','🎋','💚','🌿','✨'];
+      for (let n = 0; n < (count || 40); n++) {
+        const el = document.createElement('span');
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.className = 'panda-rain-drop';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (18 + Math.random() * 26) + 'px';
+        el.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+        el.style.animationDelay = (Math.random() * 1.2) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 6000);
+      }
+    }
+
+    // メイメイをクリックするとぴょこん＆キラキラ（なでなでカウンターつき）
     (function(){
       const avatar = document.getElementById('avatar');
       if (!avatar) return;
+      const nadeEl = document.getElementById('nade-count');
+      let nade = parseInt(localStorage.getItem('meimei-nade') || '0', 10);
+      if (nade > 0) nadeEl.textContent = `🐼 なでなで ${nade} 回 ありがとう！`;
       avatar.addEventListener('click', e => {
         e.stopPropagation();
+        nade++;
+        localStorage.setItem('meimei-nade', String(nade));
+        if (nade % 50 === 0) {
+          nadeEl.textContent = `🎉 なでなで ${nade} 回！メイメイ、しあわせいっぱいです！`;
+          pandaRain(45);
+        } else {
+          nadeEl.textContent = `🐼 なでなで ${nade} 回 ありがとう！`;
+        }
         avatar.classList.remove('poyon');
         void avatar.offsetWidth;   // アニメをやり直すおまじない
         avatar.classList.add('poyon');
@@ -604,6 +908,178 @@
           setTimeout(() => s.remove(), 820);
         }
       });
+    })();
+
+    // 来店スタンプカード（1日1回・自分の手でぽちっと押す！）
+    (function(){
+      const KEY = 'meimei-visit';
+      const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+      let data;
+      try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { data = {}; }
+      if (typeof data.count !== 'number') data = { count: 0, last: '' };
+      const grid = document.getElementById('stamp-grid');
+      const msgEl = document.getElementById('stamp-msg');
+      const noteEl = document.getElementById('stamp-note');
+      const stampImg = '<img src="assets/nikukyu.png" alt="スタンプ">';
+      const tilts = [-7, 5, -4, 8, -6, 3, 7, -5, 4, -8];
+
+      function noteText(count) {
+        const filled = ((count - 1) % 10) + 1;
+        const lap = Math.floor((count - 1) / 10) + 1;
+        if (filled === 10) return '🎉 スタンプ10個コンプリート！パンダさんパワーMAX！！';
+        return `あと ${10 - filled} 個で「パンダさんパワーMAX」のお祝いが…！` + (lap > 1 ? `（ただいま${lap}周目）` : '');
+      }
+
+      function sparkleAt(el) {
+        const r = el.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const sparkles = ['✨','💚','⭐','🎋'];
+        for (let n = 0; n < 8; n++) {
+          const sp = document.createElement('span');
+          sp.textContent = sparkles[n % sparkles.length];
+          sp.style.cssText = 'position:fixed;left:' + cx + 'px;top:' + cy + 'px;font-size:' + (14 + Math.random()*12) + 'px;pointer-events:none;z-index:9998;transition:transform .7s ease-out,opacity .7s ease-out;opacity:1;';
+          document.body.appendChild(sp);
+          const ang = (Math.PI * 2 * n) / 8;
+          const dist = 40 + Math.random() * 30;
+          requestAnimationFrame(() => {
+            sp.style.transform = 'translate(' + (Math.cos(ang)*dist) + 'px,' + (Math.sin(ang)*dist) + 'px)';
+            sp.style.opacity = '0';
+          });
+          setTimeout(() => sp.remove(), 720);
+        }
+      }
+
+      const pressedToday = data.last === todayKey;
+      const shownFilled = pressedToday ? ((data.count - 1) % 10) + 1 : data.count % 10;
+
+      for (let n = 1; n <= 10; n++) {
+        const s = document.createElement('div');
+        s.className = 'stamp' + (n <= shownFilled ? ' filled' : '');
+        s.style.setProperty('--tilt', tilts[n - 1] + 'deg');
+        if (n <= shownFilled) s.innerHTML = stampImg;
+        grid.appendChild(s);
+      }
+
+      if (pressedToday) {
+        msgEl.textContent = `${data.count}回目のご来店、ありがとう！えへへ、また会えて嬉しいな〜`;
+        noteEl.textContent = noteText(data.count);
+      } else {
+        msgEl.textContent = 'いらっしゃい！今日のスタンプがまだだよ。光ってる枠をぽちっと押してね🐾';
+        noteEl.textContent = 'スタンプは1日1個。自分の手で押すのがおいしいところ🐼';
+        const target = grid.children[shownFilled];
+        grid.classList.add('has-hint');
+        target.classList.add('pressable');
+        target.textContent = '🐾';
+        target.addEventListener('click', function press(e) {
+          e.stopPropagation();
+          target.removeEventListener('click', press);
+          target.classList.remove('pressable');
+          target.textContent = '';
+          // ①肉球ハンコが「ぺったん！」
+          const r = target.getBoundingClientRect();
+          const paw = document.createElement('img');
+          paw.src = 'assets/nikukyu.png';
+          paw.alt = '';
+          paw.className = 'paw-press';
+          paw.style.left = (r.left + r.width / 2) + 'px';
+          paw.style.top = (r.top + r.height / 2) + 'px';
+          document.body.appendChild(paw);
+          setTimeout(() => paw.remove(), 950);
+          // ②肉球が離れると、パンダさんスタンプが残ってる
+          setTimeout(() => {
+            data.count++;
+            data.last = todayKey;
+            localStorage.setItem(KEY, JSON.stringify(data));
+            target.classList.add('filled', 'pressed');
+            target.innerHTML = stampImg;
+            setTimeout(() => sparkleAt(target), 320);
+            msgEl.textContent = data.count === 1
+              ? 'はじめてのスタンプ、ありがとう！また明日も押しに来てね🐼'
+              : `${data.count}回目のご来店、ありがとう！また明日も待ってるね`;
+            noteEl.textContent = noteText(data.count);
+            if (((data.count - 1) % 10) + 1 === 10) setTimeout(() => pandaRain(55), 900);
+          }, 380);
+        });
+      }
+    })();
+
+    // パンダさんおみくじ（1日1回・凶なし）
+    (function(){
+      const fortunes = [
+        { rank: '🎋 パンダさん大吉 🎋', special: true, w: 8, img: 'assets/daikichi.jpg',
+          msg: '今日は最強のパンダさんパワー！なにをしてもうまくいく予感。思いきって挑戦してみてね',
+          lucky: 'ラッキーアイテム：笹🎋' },
+        { rank: '大吉', special: false, w: 14, img: 'assets/daikichi.jpg',
+          msg: 'にっこにこの一日になりそう！その笑顔、まわりの人にもおすそ分けしてあげてね',
+          lucky: 'ラッキーアイテム：たけのこ🌱' },
+        { rank: '中吉', special: false, w: 24,
+          msg: 'いい感じの流れが来てるよ。パンダさんみたいにマイペースでいこう',
+          lucky: 'ラッキーアイテム：おにぎり🍙' },
+        { rank: '小吉', special: false, w: 22,
+          msg: '今日は小さないいことがひとつ待ってるよ。見逃さないでね',
+          lucky: 'ラッキーアイテム：緑色のもの🌿' },
+        { rank: 'ささ吉', special: false, w: 18,
+          msg: 'じわじわ運気上昇中。笹をもぐもぐする気持ちで、コツコツいこう',
+          lucky: 'ラッキーアイテム：あったかいお茶🍵' },
+        { rank: 'のんびり吉', special: false, w: 14,
+          msg: '今日はゆっくりする日。パンダさんみたいにごろごろしてOK！ちゃんと休むのもお仕事だよ',
+          lucky: 'ラッキーアイテム：おふとん☁️' },
+      ];
+      const KEY = 'meimei-omikuji';
+      const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+      const btn = document.getElementById('omikuji-btn');
+      const panda = document.getElementById('omikuji-panda');
+      const resultEl = document.getElementById('omikuji-result');
+      function show(idx) {
+        const f = fortunes[idx];
+        resultEl.innerHTML =
+          '<div class="omikuji-result">' +
+            (f.img ? '<img class="omikuji-img" src="' + f.img + '" alt="大吉パンダさん">' : '') +
+            '<div class="rank' + (f.special ? ' special' : '') + '">' + f.rank + '</div>' +
+            '<div class="msg">' + f.msg + '</div>' +
+            '<div class="lucky">' + f.lucky + '</div>' +
+          '</div>';
+        btn.disabled = true;
+        btn.textContent = 'また明日引いてね🐼';
+      }
+      function draw() {
+        const total = fortunes.reduce((a, f) => a + f.w, 0);
+        let r = Math.random() * total;
+        for (let idx = 0; idx < fortunes.length; idx++) {
+          r -= fortunes[idx].w;
+          if (r < 0) return idx;
+        }
+        return fortunes.length - 1;
+      }
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+      if (saved && saved.date === todayKey && fortunes[saved.idx]) {
+        show(saved.idx);
+      }
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        btn.textContent = 'パンダさんが占い中…';
+        panda.classList.add('shaking');
+        const cutin = document.getElementById('cutin');
+        cutin.classList.remove('leaving');
+        cutin.classList.add('show');
+        setTimeout(() => {
+          cutin.classList.add('leaving');
+          setTimeout(() => cutin.classList.remove('show', 'leaving'), 260);
+          panda.classList.remove('shaking');
+          const idx = draw();
+          localStorage.setItem(KEY, JSON.stringify({ date: todayKey, idx: idx }));
+          show(idx);
+          if (fortunes[idx].special) pandaRain(55);
+        }, 1650);
+      });
+    })();
+
+    // 隠し仕掛け：フッターの「パンダさんパワー！」を押すと…
+    (function(){
+      const el = document.getElementById('footer-power');
+      if (el) el.addEventListener('click', () => pandaRain(45));
     })();
 
     // スクロールフェードイン
