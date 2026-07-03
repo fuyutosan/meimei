@@ -1058,13 +1058,7 @@
       document.body.appendChild(g);
       setTimeout(() => g.remove(), 3000);
     }
-    (function(){
-      const KEY = 'meimei-gate';
-      const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
-      if (localStorage.getItem(KEY) === todayKey) return;
-      localStorage.setItem(KEY, todayKey);
-      showGate();
-    })();
+    showGate();  // 開演のカーテンは毎回開く（ふゆとさんリクエスト 2026-07-03）
 
     // 🎋 七夕まつり（7/1〜7/7だけ開催）
     // SASAに鍵を入れると「みんなの願いごと笹」モードに切り替わる（空のあいだは自分だけの笹）
