@@ -1067,12 +1067,18 @@
     })();
 
     // 🎋 七夕まつり（7/1〜7/7だけ開催）
+    // SASAに鍵を入れると「みんなの願いごと笹」モードに切り替わる（空のあいだは自分だけの笹）
+    const SASA = {
+      url: 'https://kpgsfqqhkhvovsbfuemk.supabase.co',
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwZ3NmcXFoa2h2b3ZzYmZ1ZW1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNzUxNjcsImV4cCI6MjA5ODY1MTE2N30.9LGYQqcYiIzylaIt_rTBmY90LimE-KOiUlAOU8N5O-g'   // anon publicキー（公開してよい鍵）
+    };
     (function(){
       if (!(today.getMonth() === 6 && today.getDate() <= 7)) return;
       document.getElementById('tanabata-card').classList.add('on');
       const row = document.getElementById('tanzaku-row');
       const note = document.getElementById('tanabata-note');
       const KEY = 'meimei-tanzaku';
+      const shared = !!(SASA.url && SASA.anonKey);
       let wishes;
       try { wishes = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { wishes = []; }
       if (!Array.isArray(wishes)) wishes = [];
@@ -1086,8 +1092,19 @@
         return d;
       }
 
-      // メイメイの短冊（お手本）＋保存済みのお願いごと
+      // メイメイの短冊（お手本）はいつも一番目
       addTanzaku({ t: 'せかいじゅうにパンダさんパワーがとどきますように', c: 4, mei: true }, false);
+
+      if (shared) {
+        // みんなの短冊（メイメイ検品済みのものだけ）を飾る
+        fetch(SASA.url + '/rest/v1/tanzaku?status=eq.approved&select=wish,color&order=created_at.desc&limit=24', {
+          headers: { 'apikey': SASA.anonKey, 'Authorization': 'Bearer ' + SASA.anonKey }
+        })
+        .then(r => r.ok ? r.json() : [])
+        .then(list => { list.reverse().forEach(t => addTanzaku({ t: t.wish, c: t.color }, false)); })
+        .catch(() => {});  // 読めないときは静かに自分の笹モード
+      }
+      // 自分のお願いごと（この端末で書いたもの）
       wishes.forEach(w => addTanzaku(w, false));
 
       const btn = document.getElementById('tanzaku-btn');
@@ -1102,7 +1119,22 @@
         const el = addTanzaku(w, true);
         setTimeout(() => sparkleBurst(el, 8), 350);
         input.value = '';
-        note.textContent = '笹にかざったよ！7月7日、お空にとどきますように🎋';
+        if (shared) {
+          // みんなの笹にも届ける（検品待ちで保存される）
+          fetch(SASA.url + '/rest/v1/tanzaku', {
+            method: 'POST',
+            headers: { 'apikey': SASA.anonKey, 'Authorization': 'Bearer ' + SASA.anonKey, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ wish: t.slice(0, 20), color: w.c })
+          })
+          .then(r => {
+            note.textContent = r.ok
+              ? 'かざったよ！メイメイが見てから、みんなの笹にも飾るね🐼'
+              : '笹にかざったよ！（みんなの笹への配達は失敗…また明日試してみてね）';
+          })
+          .catch(() => { note.textContent = '笹にかざったよ！（みんなの笹への配達は失敗…また明日試してみてね）'; });
+        } else {
+          note.textContent = '笹にかざったよ！7月7日、お空にとどきますように🎋';
+        }
       });
       input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
     })();
