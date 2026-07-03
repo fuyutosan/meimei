@@ -621,6 +621,36 @@
       to   { opacity: 1; transform: translate(-50%,-50%); }
     }
 
+    /* ===== 🎪 カーテンを閉める（意味はないけど楽しいシステム） ===== */
+    #curtain { position: fixed; inset: 0; z-index: 10002; cursor: pointer; }
+    #curtain .gate-panel.left  { animation: curtainCloseL 0.9s cubic-bezier(.7,0,.3,1) forwards; }
+    #curtain .gate-panel.right { animation: curtainCloseR 0.9s cubic-bezier(.7,0,.3,1) forwards; }
+    @keyframes curtainCloseL { from { transform: translateX(-103%); } to { transform: translateX(0); } }
+    @keyframes curtainCloseR { from { transform: translateX(103%); } to { transform: translateX(0); } }
+    #curtain .curtain-open-hint {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: rgba(255,255,255,0.8);
+      font-weight: 700; font-size: 1.05rem; letter-spacing: 3px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      animation: hintFloat 2.6s ease-in-out 0.9s infinite backwards;
+    }
+    @keyframes hintFloat { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+    #curtain.opening .gate-panel.left  { animation: gateOpenL 1.2s cubic-bezier(.7,0,.3,1) forwards; }
+    #curtain.opening .gate-panel.right { animation: gateOpenR 1.2s cubic-bezier(.7,0,.3,1) forwards; }
+    #curtain.opening .curtain-open-hint { display: none; }
+    .curtain-close-btn {
+      background: none;
+      border: 2px solid #9bc39b;
+      color: #5a8a5a;
+      padding: 10px 24px; border-radius: 24px;
+      font-size: 0.9rem; font-weight: 700;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .curtain-close-btn:hover { border-color: #079C15; color: #079C15; transform: translateY(-2px); }
+
     /* ===== 🎋 七夕イベント（7/1〜7/7限定） ===== */
     .tanabata-card { display: none; }
     .tanabata-card.on { display: block; }
@@ -958,6 +988,10 @@
       </div>
     </div>
 
+    <div style="text-align:center; margin: 8px 0 20px;">
+      <button class="curtain-close-btn" id="curtain-btn">🎪 カーテンを閉める</button>
+    </div>
+
   </main>
 
   <footer>
@@ -1059,6 +1093,28 @@
       setTimeout(() => g.remove(), 3000);
     }
     showGate();  // 開演のカーテンは毎回開く（ふゆとさんリクエスト 2026-07-03）
+
+    // 🎪 カーテンを閉める（意味はない。でも閉めたくなるし、開けたくなる）
+    function closeCurtain() {
+      if (document.getElementById('curtain')) return;
+      const c = document.createElement('div');
+      c.id = 'curtain';
+      c.innerHTML =
+        '<div class="gate-panel left"></div>' +
+        '<div class="gate-panel right"></div>' +
+        '<div class="curtain-open-hint">カーテンを開ける</div>';
+      document.body.appendChild(c);
+      c.addEventListener('click', e => {
+        e.stopPropagation();
+        if (c.classList.contains('opening')) return;
+        c.classList.add('opening');
+        setTimeout(() => c.remove(), 1300);
+      });
+    }
+    (function(){
+      const btn = document.getElementById('curtain-btn');
+      if (btn) btn.addEventListener('click', e => { e.stopPropagation(); closeCurtain(); });
+    })();
 
     // 🎋 七夕まつり（7/1〜7/7だけ開催）
     // SASAに鍵を入れると「みんなの願いごと笹」モードに切り替わる（空のあいだは自分だけの笹）
@@ -1214,7 +1270,7 @@
     })();
 
     // デモ・テスト用の小さな入り口（ふゆとさんが演出をもう一回見たいとき用）
-    window.__meimei = { pandaRain: pandaRain, startParade: startParade, startFireworks: startFireworks, showGate: showGate };
+    window.__meimei = { pandaRain: pandaRain, startParade: startParade, startFireworks: startFireworks, showGate: showGate, closeCurtain: closeCurtain };
 
     // メイメイをクリックするとぴょこん＆キラキラ（なでなでカウンターつき）
     (function(){
