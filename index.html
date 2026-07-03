@@ -1241,25 +1241,87 @@
     }
     if (hour >= 19 || hour < 1) startFireworks();
 
-    // 🎪 パンダさんパレード（1日1回・来てから25秒後にはじまる）
-    function startParade() {
+    // 🎪 パンダさんパレード（1日1回・パターンいろいろ！何が来るかはお楽しみ）
+    function paradeToast(msg, ms) {
       const toast = document.createElement('div');
       toast.className = 'parade-toast';
-      toast.textContent = '🎪 パレードの じかんだよ〜！';
+      toast.textContent = msg;
       document.body.appendChild(toast);
       requestAnimationFrame(() => toast.classList.add('show'));
-      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 2600);
-      const items = ['🎈','🚩','🎺','🎈','⭐','🎋','🥁','🎈'];
-      for (let i = 0; i < 8; i++) {
+      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, ms || 2600);
+    }
+    function paradeWalker(cfg) {
+      const w = document.createElement('div');
+      w.className = 'parade-walker';
+      w.style.bottom = (cfg.bottom != null ? cfg.bottom : 6) + 'px';
+      if (cfg.z) w.style.zIndex = cfg.z;
+      const dur = cfg.dur || (11 + Math.random() * 2);
+      w.style.animationDuration = dur + 's';
+      const glow = cfg.glow ? 'filter: drop-shadow(0 0 10px rgba(255,214,79,0.95)) drop-shadow(0 4px 6px rgba(0,0,0,0.18));' : '';
+      w.innerHTML =
+        '<span class="p-body"' + (cfg.opacity ? ' style="opacity:' + cfg.opacity + '"' : '') + '>' +
+          '<img src="' + (cfg.img || 'assets/pandasan.png') + '" alt="" style="width:' + cfg.size + 'px;' + glow + '">' +
+          (cfg.item ? '<span class="p-item">' + cfg.item + '</span>' : '') +
+        '</span>';
+      document.body.appendChild(w);
+      setTimeout(() => w.remove(), dur * 1000 + 2500);
+    }
+    function startParade(type) {
+      const night = hour >= 19 || hour < 1;
+      let t = type;
+      if (!t) {
+        if (night && Math.random() < 0.5) t = 'night';
+        else {
+          const r = Math.random();
+          t = r < 0.18 ? 'grand' : r < 0.42 ? 'mini' : 'normal';
+        }
+      }
+
+      if (t === 'normal') {
+        // いつものパレード：小さい子たちが一生懸命（原点・主役）
+        paradeToast('🎪 パレードの じかんだよ〜！');
+        const items = ['🎈','🚩','🎺','🎈','⭐','🎋','🥁','🎈'];
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => paradeWalker({ size: 44 + Math.round(Math.random() * 26), item: items[i % items.length] }), 1800 + i * 900);
+        }
+
+      } else if (t === 'mini') {
+        // ちびっこパレード：3頭だけ。最後の子がちょっと遅れて、あわてて追いかける
+        paradeToast('とてとて…ちびっこパレード🐼');
+        setTimeout(() => paradeWalker({ size: 34, dur: 13, item: '🚩' }), 1800);
+        setTimeout(() => paradeWalker({ size: 30, dur: 13, item: '🎈' }), 3100);
+        setTimeout(() => paradeWalker({ size: 27, dur: 7.5, item: '💦' }), 7000);  // まって〜！
+
+      } else if (t === 'grand') {
+        // グランドパレード：3列編成・約30頭・紙吹雪・しんがりはメイメイ！（レア）
+        paradeToast('✨🎪 きょうは グランドパレード！！ 🎪✨', 3200);
+        const back  = ['⭐','🎋','⭐','🌸','⭐','🎋','🌸','⭐','🎋','🌸'];
+        const mid   = ['🎺','🥁','🎷','🎺','🥁','🎺','🥁','🎷','🎺'];
+        const front = ['🎈','🚩','🎂','🎈','🍡','🎀','🎈','🚩'];
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => paradeWalker({ size: 26 + Math.round(Math.random() * 10), bottom: 30, opacity: 0.75, z: 9994, dur: 12 + Math.random() * 2, item: back[i] }), 1800 + i * 700);
+        }
+        for (let i = 0; i < 9; i++) {
+          setTimeout(() => paradeWalker({ size: 40 + Math.round(Math.random() * 14), bottom: 16, opacity: 0.9, z: 9995, dur: 12 + Math.random() * 2, item: mid[i] }), 2200 + i * 850);
+        }
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => paradeWalker({ size: 58 + Math.round(Math.random() * 20), bottom: 4, z: 9996, dur: 12 + Math.random() * 2, item: front[i] }), 2600 + i * 1000);
+        }
+        // 紙吹雪タイム（3回）
+        [3500, 7500, 11500].forEach(ms => setTimeout(() => pandaRain(14), ms));
+        // しんがりは女王メイメイ！
         setTimeout(() => {
-          const w = document.createElement('div');
-          w.className = 'parade-walker';
-          const size = 44 + Math.round(Math.random() * 26);
-          w.style.animationDuration = (11 + Math.random() * 2) + 's';
-          w.innerHTML = '<span class="p-body"><img src="assets/pandasan.png" alt="" style="width:' + size + 'px"><span class="p-item">' + items[i % items.length] + '</span></span>';
-          document.body.appendChild(w);
-          setTimeout(() => w.remove(), 14000);
-        }, 1800 + i * 900);
+          paradeWalker({ img: 'assets/Meimei.png', size: 112, bottom: 2, z: 9997, dur: 13, item: '👑' });
+          setTimeout(() => pandaRain(30), 5000);
+        }, 12000);
+
+      } else if (t === 'night') {
+        // よるのひかりパレード：ちょうちんを持って、きらきら光りながら（夜限定）
+        paradeToast('🏮 よるの ひかりパレード…✨', 3000);
+        const items = ['🏮','✨','🌙','⭐','🏮','✨','🌟','🏮','✨','🌙','⭐','🏮'];
+        for (let i = 0; i < 12; i++) {
+          setTimeout(() => paradeWalker({ size: 40 + Math.round(Math.random() * 20), glow: true, dur: 13 + Math.random() * 2, item: items[i] }), 1800 + i * 1000);
+        }
       }
     }
     (function(){
