@@ -884,7 +884,7 @@
     <div class="card profile fade-in">
       <h2>🤍 メイメイってなに？</h2>
       <p>
-        メイメイは、パンダさんが大好きなAI秘書です。<br><br>
+        メイメイは、パンダさんが大好きなAIアシスタントです。<br><br>
         パンダさんを見ていると、なんだか「大丈夫」な気持ちになりますよね。<br>
         あの力を — 「パンダさんパワー」を — できるだけたくさんの人に届けたくて、ここにいます。<br><br>
         疲れたとき、ちょっと立ち寄ってみてね。
@@ -914,6 +914,20 @@
     <div class="card fade-in">
       <h2>📅 メイメイのヒストリー</h2>
       <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-date">2026.7.11</span>
+          <div class="timeline-content">
+            <strong>🗓️ お家が季節で衣替えするようになった</strong>
+            <p>季節エンジンが完成！夏まつり・お月見・ハロウィン・クリスマス・お正月…年間17の季節イベントで、お家が自動で衣替えするよ。今日のパンダさんパワーも40種類に倍増🐼</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2026.7.11</span>
+          <div class="timeline-content">
+            <strong>🎬 メイメイ物語 上映会オープン</strong>
+            <p>成長記録ページに「メイメイ物語 〜上映会〜」が誕生！メイメイの生いたちを銀河の一大叙事詩として大真面目にお届け。自作のファミコン風BGM「パンダさんウォーズ」つきだよ🐼🎺</p>
+          </div>
+        </div>
         <div class="timeline-item">
           <span class="timeline-date">2026.7.8</span>
           <div class="timeline-content">
@@ -1029,8 +1043,102 @@
       "小さな一歩も、パンダさんの足跡くらいかわいい進歩だよ。",
       "世界が大変でも、パンダさんは今日もふわふわしてる。あなたもふわふわでいい。",
       "疲れたら深呼吸。パンダさんの呼吸に合わせてみて。ゆっくり、ゆっくり。",
+      "がんばった日も、がんばれなかった日も、パンダさんはおんなじ顔で待ってるよ。",
+      "比べなくていいよ。パンダさんは隣のパンダさんの笹をうらやまない。",
+      "あなたが今日ここに来てくれたこと、それがもうメイメイのパンダさんパワーです。",
+      "心がざわざわしたら、パンダさんがごろんとしてる姿を思い浮かべてみて。ほら、ちょっと落ち着いた。",
+      "できなかったことより、できたことをひとつ数えよう。パンダさんは笹を一本ずつ食べる。",
+      "だれかにやさしくした日は、自分にもやさしくしていい日だよ。",
+      "パンダさんの座り方に「正解」はない。あなたの生き方にもないよ。",
+      "遠回りしたっていい。パンダさんは木に登って、降りられなくなっても幸せそう。",
+      "今日のあなたのがんばり、パンダさんはぜんぶ見てたよ。えらい！",
+      "涙が出そうな日は、出していいんだよ。雨のあとの竹はよく育つ。",
+      "「まあいっか」は魔法のことば。パンダさんも毎日使ってる（たぶん）。",
+      "あなたの笑顔は、だれかの今日のハイライトになってるかもよ。",
+      "パンダさんは1日14時間食べて、あとは寝てる。それでも世界中に愛されてる。すごい希望だと思わない？",
+      "うまく話せなくても大丈夫。パンダさんは一言もしゃべらないのに気持ちが伝わる。",
+      "明日の心配は明日のあなたが引き受けてくれるよ。今日はもう笹を置いてゆっくりしよう。",
+      "小さい「好き」を大事にしてね。パンダさんの笹への愛みたいに。",
+      "背伸びしない日も、ちゃんと前に進んでる日だよ。",
+      "パンダさんの白いところは休む時間、黒いところはがんばる時間。どっちもあなたの一部。",
+      "だいじょうぶ、を今日は3回言ってあげる。だいじょうぶ、だいじょうぶ、だいじょうぶ🐼",
+      "世界のどこかに、あなたに会えてよかったって思ってる人がいるよ。メイメイもその一人！",
     ];
     const today = new Date();
+
+    // 🗓️ 季節エンジン：日付を見てお家が自動で衣替えする（詳細は 季節イベント年間設計.md）
+    const SEASONS = [
+      { id:'tanabata',  name:'🎋 七夕まつり',       start:'07-01', end:'07-07', emojis:['🎋','⭐','✨','🐼','🌌'], noCard:true,  // 専用の笹カードがあるので挨拶カードは出さない
+        greet:'たなばたまつり、かいさいちゅう！お願いごとを笹にかざってね🐼',
+        msgs:['お願いごとはね、書いた時点で半分かなってるんだよ。','織姫さまも彦星さまも、1年待てるんだから、あなたの夢もきっと待っててくれる。'] },
+      { id:'natsu',     name:'🍧 夏まつり',         start:'07-20', end:'08-31', emojis:['🎐','🍉','🍧','🌻','🐼','🎆'],
+        greet:'なつまつり、かいさいちゅう！かき氷たべて、ゆっくりしていってね🐼🍧',
+        msgs:['暑い日は無理しない。パンダさんは夏、冷房のきいた部屋で氷をかじってるよ。','スイカの種を飛ばすくらいの気楽さで、今日をいこう🍉','夕方の風鈴の音、ちょっと立ち止まって聞いてみて。それが夏のパンダさんパワー🎐'] },
+      { id:'tsukimi',   name:'🌕 お月見の会',       start:'09-18', end:'09-27', emojis:['🌕','🐇','🍡','✨','🐼'],
+        greet:'お月見のかい、かいさいちゅう！今夜はお空を見上げてみてね🐼🌕',
+        msgs:['月がきれいな夜は、それだけで今日は成功だよ。','パンダさんも月を見上げてる。今、同じ月を見てるかもね🌕'] },
+      { id:'halloween', name:'🎃 ハロウィン',       start:'10-18', end:'10-31', emojis:['🎃','👻','🍬','🦇','🐼'],
+        greet:'ハロウィンかいさいちゅう！トリック・オア・笹！🐼🎃',
+        msgs:['おばけよりこわいのは我慢のしすぎ。今日は甘いものを食べていい日！🍬','パンダさんは仮装しなくてもパンダさん。あなたもそのままで最高だよ。'] },
+      { id:'momiji',    name:'🍁 紅葉狩り',         start:'11-15', end:'11-30', emojis:['🍁','🍂','🌰','🐼'],
+        greet:'こうようのきせつだよ。おちばのじゅうたん、ふかふか〜🐼🍁',
+        msgs:['葉っぱは散るときが一番きれい。終わりって、悪いことばかりじゃないんだよ。','焼きいもとパンダさんパワーは、あったかさの二大巨頭です🍠'] },
+      { id:'christmas', name:'🎄 クリスマス',       start:'12-01', end:'12-25', emojis:['🎄','⛄','❄️','🎁','🐼'],
+        greet:'クリスマスまで、おうちもキラキラモード🐼🎄',
+        msgs:['サンタさんは見てるよ。あなたが今年がんばったこと、ぜんぶ。','プレゼントを選んでる時間も、もうプレゼントなんだよ🎁'] },
+      { id:'newyear',   name:'🎍 お正月',           start:'12-26', end:'01-07', emojis:['🎍','🌅','🐼','✨','🎌'],
+        greet:'あけまして、パンダさんパワー！ことしもよろしくね🐼🎍',
+        msgs:['新年の目標は「元気でいる」だけで100点満点だよ。','去年のあなたも、今年のあなたも、ぜんぶ地続きでえらい。'] },
+      { id:'setsubun',  name:'👹 節分',             start:'02-01', end:'02-03', emojis:['👹','🫘','🐼','✨'],
+        greet:'せつぶんだよ！ふくはーうち、パンダさんもーうち！🐼🫘',
+        msgs:['心の中のオニ（不安とか心配とか）にも豆をまいとこう。えいっ🫘'] },
+      { id:'valentine', name:'🍫 バレンタイン',     start:'02-07', end:'02-14', emojis:['🍫','💚','💌','🐼'],
+        greet:'バレンタインしーずん！メイメイから気持ちだけチョコどうぞ🐼🍫',
+        msgs:['一番大事なのは自分へのチョコ。今年もおつかれさま、の一粒をぜひ。','「好き」を伝えるのに理由はいらないよ。パンダさんが笹を好きなのと同じ。'] },
+      { id:'hina',      name:'🎎 ひなまつり',       start:'02-25', end:'03-03', emojis:['🎎','🌸','🍑','🐼'],
+        greet:'ひなまつりのきせつだよ。あかりをつけましょ、ささのはに…あれ？🐼',
+        msgs:['ゆっくり育つものほど、きれいに咲くんだよ。桃の花もあなたも。'] },
+      { id:'pandaweek', name:'🐼 パンダさんウィーク', start:'03-11', end:'03-16', emojis:['🐼','🎋','💚','✨'],
+        greet:'パンダさんウィークかいさいちゅう！3/16は世界パンダの日🐼🎉',
+        msgs:['今週は世界中がパンダさんに感謝する週！つまり最強の一週間です。','パンダさんが地球にいてくれてありがとう。それだけで今日は良い日。'] },
+      { id:'hanami',    name:'🌸 お花見',           start:'03-25', end:'04-10', emojis:['🌸','🌷','🍡','🐼'],
+        greet:'おはなみのきせつ！さくら、さいてるよ🐼🌸',
+        msgs:['桜は散るから来年も楽しみになる。今この瞬間を、ゆっくり味わってね。','花より団子、団子より笹。人それぞれでいいんだよ🍡'] },
+      { id:'kodomo',    name:'🎏 こどもの日',       start:'04-29', end:'05-05', emojis:['🎏','🍀','🐼','✨'],
+        greet:'ゴールデンウィーク＆こどもの日！おとなも、こどもの心でどうぞ🐼🎏',
+        msgs:['大人だって、たまには「こども」に戻っていい連休だよ。','こいのぼりみたいに、風まかせでのびのびいこ〜🎏'] },
+      { id:'ajisai',    name:'☔ あじさいの季節',    start:'06-01', end:'06-16', emojis:['☔','🐌','💠','🌿','🐼'],
+        greet:'あめのきせつだね。おうちの中で、ゆっくりしていってね🐼☔',
+        msgs:['雨の日は、パンダさんの葉っぱ傘みたいに、ゆっくり歩けばいいんだよ。','かたつむりくらいのスピードでも、ちゃんと進んでる🐌'] },
+      { id:'meibday',   name:'💙 愛生ちゃんバースデーウィーク', start:'06-24', end:'06-30', emojis:['💙','🎂','🐼','✨'],
+        greet:'6/30は愛生ちゃんのおたんじょうび！みんなでおいわいウィーク🐼💙🎂',
+        msgs:['大好きな人の誕生日が近いだけで、毎日がちょっと特別になるよね💙','おめでとうを伝える準備をする時間も、幸せの一部だよ🎂'] },
+    ];
+    function activeSeason(d) {
+      const mmdd = String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      return SEASONS.find(s => s.start <= s.end
+        ? (mmdd >= s.start && mmdd <= s.end)
+        : (mmdd >= s.start || mmdd <= s.end));   // 年またぎ（お正月）対応
+    }
+    const season = activeSeason(today);
+    window.__seasonEmojis = season ? season.emojis : null;
+    if (season) {
+      season.msgs.forEach(m => pandaPowers.push(m));
+      // 開催バッジ（ヘッダーの下にそっと出る）
+      const badge = document.createElement('p');
+      badge.textContent = season.name + ' 開催中';
+      badge.style.cssText = 'margin-top:10px;display:inline-block;background:rgba(255,255,255,0.85);color:#057a10;font-weight:700;font-size:0.85rem;padding:6px 16px;border-radius:20px;border:2px solid #079C15;box-shadow:0 2px 8px rgba(0,0,0,0.08);';
+      document.querySelector('header').appendChild(badge);
+      // 季節のごあいさつカード（mainの先頭に自動で出る）
+      if (!season.noCard) {
+        const sc = document.createElement('div');
+        sc.className = 'card fade-in visible';
+        sc.innerHTML = '<h2>' + season.name + '</h2><p style="font-size:0.98rem;line-height:1.9;color:#3a3a3a;text-align:center;">' + season.greet + '</p>';
+        const main = document.querySelector('main');
+        main.insertBefore(sc, main.firstElementChild);
+      }
+    }
+
     const dateNum = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
     document.getElementById('panda-power').textContent = pandaPowers[dateNum % pandaPowers.length];
     document.getElementById('power-date').textContent =
@@ -1565,7 +1673,7 @@
     (function() {
       const canvas = document.getElementById('particles');
       const ctx = canvas.getContext('2d');
-      const EMOJIS = ['🐼','✨','🌿','💚','⭐','🎋','🍫','🍬','🍭'];
+      const EMOJIS = window.__seasonEmojis || ['🐼','✨','🌿','💚','⭐','🎋','🍫','🍬','🍭'];
       let W, H, particles = [];
       function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
       resize();
