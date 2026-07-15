@@ -1305,6 +1305,41 @@
       input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
     })();
 
+    // 🎁 季節の目玉企画ローダー（開催期間中だけ seasonal/<id>.js を読み込む。?season=<id> でプレビュー偽装）
+    (function(){
+      const SEASONAL_VER = '?v=1'; // seasonal/*.js 更新時にインクリメント（GitHub Pagesキャッシュ対策）
+      let forced = null;
+      try { forced = new URLSearchParams(location.search).get('season'); } catch(e){}
+      const s = forced ? SEASONS.find(x => x.id === forced) : season;
+      if (!s || s.id === 'tanabata') return; // 七夕は既存実装のまま
+      if (forced && (!season || season.id !== s.id)) {
+        window.__seasonEmojis = s.emojis; // 絵文字降らしも偽装
+        const badge = document.createElement('p');
+        badge.textContent = s.name + ' 開催中（プレビュー）';
+        badge.style.cssText = 'margin-top:10px;display:inline-block;background:rgba(255,255,255,0.85);color:#057a10;font-weight:700;font-size:0.85rem;padding:6px 16px;border-radius:20px;border:2px solid #079C15;box-shadow:0 2px 8px rgba(0,0,0,0.08);';
+        document.querySelector('header').appendChild(badge);
+      }
+      const card = document.createElement('div');
+      card.className = 'card fade-in visible seasonal-card';
+      card.id = 'seasonal-card-' + s.id;
+      card.innerHTML = '<p style="text-align:center;">じゅんびちゅう…🐼</p>';
+      const main = document.querySelector('main');
+      main.insertBefore(card, main.children[1] || null);
+      const tk = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+      const sc = document.createElement('script');
+      sc.src = 'seasonal/' + s.id + '.js' + SEASONAL_VER;
+      sc.onload = function(){
+        const m = window.MEIMEI_SEASONAL;
+        if (m && m.id === s.id && typeof m.mount === 'function') {
+          try { m.mount({ card: card, todayKey: tk, seasonId: s.id }); }
+          catch(e){ card.remove(); }
+        } else { card.remove(); }
+        window.MEIMEI_SEASONAL = null;
+      };
+      sc.onerror = function(){ card.remove(); };
+      document.body.appendChild(sc);
+    })();
+
     // 🎆 夜の花火ショー（19時〜深夜1時のあいだ開催）
     function startFireworks() {
       if (document.querySelector('.fireworks-badge')) return;
