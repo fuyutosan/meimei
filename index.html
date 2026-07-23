@@ -1607,24 +1607,36 @@
     // パンダさんおみくじ（1日1回・凶なし）
     (function(){
       const fortunes = [
-        { rank: '🎋 パンダさん大吉 🎋', special: true, w: 8, img: 'assets/daikichi.jpg',
+        { rank: '🎋 パンダさん大吉 🎋', special: true, w: 6, img: 'assets/daikichi.jpg',
           msg: '今日は最強のパンダさんパワー！なにをしてもうまくいく予感。思いきって挑戦してみてね',
           lucky: 'ラッキーアイテム：笹🎋' },
-        { rank: '大吉', special: false, w: 14, img: 'assets/daikichi.jpg',
+        { rank: '大吉', special: false, w: 12, img: 'assets/omikuji-daikichi2.png',
           msg: 'にっこにこの一日になりそう！その笑顔、まわりの人にもおすそ分けしてあげてね',
           lucky: 'ラッキーアイテム：たけのこ🌱' },
-        { rank: '中吉', special: false, w: 24,
+        { rank: '中吉', special: false, w: 16, img: 'assets/omikuji-chukichi.png',
           msg: 'いい感じの流れが来てるよ。パンダさんみたいにマイペースでいこう',
           lucky: 'ラッキーアイテム：おにぎり🍙' },
-        { rank: '小吉', special: false, w: 22,
+        { rank: '小吉', special: false, w: 14, img: 'assets/omikuji-shokichi.png',
           msg: '今日は小さないいことがひとつ待ってるよ。見逃さないでね',
           lucky: 'ラッキーアイテム：緑色のもの🌿' },
-        { rank: 'ささ吉', special: false, w: 18,
+        { rank: 'ささ吉', special: false, w: 12, img: 'assets/omikuji-sasakichi.png',
           msg: 'じわじわ運気上昇中。笹をもぐもぐする気持ちで、コツコツいこう',
           lucky: 'ラッキーアイテム：あったかいお茶🍵' },
-        { rank: 'のんびり吉', special: false, w: 14,
+        { rank: 'たけのこ吉', special: false, w: 10, img: 'assets/omikuji-takenoko.png',
+          msg: 'ぐんぐん伸びる日！新しいことを始めるのにぴったり。たけのこみたいにすくすくいこう',
+          lucky: 'ラッキーアイテム：新しい文房具✏️' },
+        { rank: 'のんびり吉', special: false, w: 10, img: 'assets/omikuji-nonbiri.png',
           msg: '今日はゆっくりする日。パンダさんみたいにごろごろしてOK！ちゃんと休むのもお仕事だよ',
           lucky: 'ラッキーアイテム：おふとん☁️' },
+        { rank: 'もぐもぐ吉', special: false, w: 8, img: 'assets/omikuji-mogumogu.png',
+          msg: 'おいしいものが運気アップのカギ！今日はごはんをよくかんで、じっくり味わってみてね',
+          lucky: 'ラッキーアイテム：好きなおやつ🍡' },
+        { rank: 'ころころ吉', special: false, w: 6, img: 'assets/omikuji-korokoro.png',
+          msg: '転んでもころころ起きればだいじょうぶ！小さな失敗は笑い話に変わる日だよ',
+          lucky: 'ラッキーアイテム：まるいもの⚪' },
+        { rank: 'ぽかぽか吉', special: false, w: 6, img: 'assets/omikuji-pokapoka.png',
+          msg: '心があったかくなる出会いがありそう。やさしい言葉をひとつ、だれかに届けてみてね',
+          lucky: 'ラッキーアイテム：ひだまり☀️' },
       ];
       const KEY = 'meimei-omikuji';
       const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
@@ -1635,7 +1647,7 @@
         const f = fortunes[idx];
         resultEl.innerHTML =
           '<div class="omikuji-result">' +
-            (f.img ? '<img class="omikuji-img" src="' + f.img + '" alt="大吉パンダさん">' : '') +
+            (f.img ? '<img class="omikuji-img" src="' + f.img + '" alt="' + f.rank + 'パンダさん" onerror="this.remove()">' : '') +
             '<div class="rank' + (f.special ? ' special' : '') + '">' + f.rank + '</div>' +
             '<div class="msg">' + f.msg + '</div>' +
             '<div class="lucky">' + f.lucky + '</div>' +
