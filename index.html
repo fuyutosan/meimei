@@ -1392,6 +1392,26 @@
         o.connect(f); o2.connect(f); f.connect(g); g.connect(bgmGain);
         o.start(t); o.stop(t + 0.1); o2.start(t); o2.stop(t + 0.1);
       }
+      function triBass(freq, t, dur, gain) {   // やわらかい低音（竹林のベース）
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'triangle'; o.frequency.value = freq;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(gain, t + 0.06);
+        g.gain.setValueAtTime(gain, t + dur * 0.75);
+        g.gain.linearRampToValueAtTime(0, t + dur);
+        o.connect(g); g.connect(bgmGain);
+        o.start(t); o.stop(t + dur + 0.05);
+      }
+      function pok(t, gain, hi) {   // 竹をコンと叩く音
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(hi ? 620 : 440, t);
+        o.frequency.exponentialRampToValueAtTime(hi ? 380 : 260, t + 0.07);
+        g.gain.setValueAtTime(gain, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        o.connect(g); g.connect(bgmGain);
+        o.start(t); o.stop(t + 0.15);
+      }
       function tick(t, gain) {   // 締め太鼓「カッ」
         const len = actx.sampleRate * 0.06;
         const buf = actx.createBuffer(1, len, actx.sampleRate);
@@ -1432,13 +1452,74 @@
         }
         return t + total * B;
       }
+      // 🎋 竹林BGM（通常時）：ヒーリング×ボサノヴァ。やわらかい音色で、裏拍のコードで静かに揺れる
+      function softLead(freq, t, dur, gain) {   // ゆっくり立ち上がるサイン波のリード（癒しの笛）
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'sine'; o.frequency.value = freq;
+        const v = actx.createOscillator(), vg = actx.createGain();   // かすかなビブラート
+        v.frequency.value = 5; vg.gain.value = freq * 0.004;
+        v.connect(vg); vg.connect(o.frequency);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(gain, t + Math.min(0.25, dur * 0.3));
+        g.gain.setValueAtTime(gain, t + dur * 0.6);
+        g.gain.linearRampToValueAtTime(0, t + dur);
+        o.connect(g); g.connect(bgmGain);
+        o.start(t); o.stop(t + dur + 0.05); v.start(t); v.stop(t + dur + 0.05);
+      }
+      function chordStroke(notes, t, gain) {   // ギターっぽいコードのつまびき（少しずらして順に鳴らす）
+        notes.forEach((n, i) => {
+          const o = actx.createOscillator(), g = actx.createGain();
+          o.type = 'triangle'; o.frequency.value = NOTE[n];
+          const st = t + i * 0.018;
+          g.gain.setValueAtTime(gain, st);
+          g.gain.exponentialRampToValueAtTime(0.001, st + 0.55);
+          o.connect(g); g.connect(bgmGain);
+          o.start(st); o.stop(st + 0.6);
+        });
+      }
+      const HEAL_A = [['A4',2],['G4',1],['F4',3],['R',2],['C5',2],['D5',1],['C5',2.5],['R',2.5]];
+      const HEAL_B = [['D5',2],['C5',1],['A4',2],['G4',1],['A4',2],['F4',3],['G4',1.5],['F4',1],['R',2.5]];
+      // Fmaj7 → Am7 → B♭maj7 → C7 の循環（4拍ずつ）
+      const CHORDS = [
+        { root: 'F2',  fifth: 'C3', tones: ['F3','A3','C4','E4'] },
+        { root: 'A2',  fifth: 'E3', tones: ['A3','C4','E4','G4'] },
+        { root: 'As2', fifth: 'F3', tones: ['As3','D4','F4','A4'] },
+        { root: 'C3',  fifth: 'G3', tones: ['C4','E4','G4','As4'] },
+      ];
+      function scheduleBamboo(t, variant) {
+        const B = 0.75;   // BPM80：のんびり癒しテンポ（ふゆとさん監修で微調整済み）
+        const mel = variant ? HEAL_B : HEAL_A;
+        let mt = t, total = 0;
+        mel.forEach(nd => {
+          const dur = nd[1] * B;
+          if (nd[0] !== 'R') softLead(NOTE[nd[0]], mt, dur * 0.98, 0.055);
+          mt += dur; total += nd[1];
+        });
+        for (let bar = 0; bar < total / 4; bar++) {
+          const ch = CHORDS[bar % 4];
+          const bt = t + bar * 4 * B;
+          triBass(NOTE[ch.root], bt, B * 1.4, 0.15);                 // ボサノヴァのベース：1拍目に根音
+          triBass(NOTE[ch.fifth], bt + B * 1.5, B * 1.3, 0.12);      // 2拍目の裏に5度（ここが揺れの正体）
+          triBass(NOTE[ch.root], bt + B * 3, B * 0.9, 0.11);        // 4拍目に根音でひと呼吸
+          chordStroke(ch.tones, bt + B * 0.5, 0.028);                // コードは裏拍で（音ハメ）
+          chordStroke(ch.tones, bt + B * 2.5, 0.028);
+          chordStroke(ch.tones.slice(0, 3), bt + B * 3.5, 0.018);   // 小節の締めは小さく3音だけ
+          pok(bt + B, 0.09, false); pok(bt + B * 3, 0.09, true);    // リムショット風の「コッ」を2・4拍目に
+          for (let e = 0; e < 8; e++) tick(bt + e * B * 0.5, e % 2 ? 0.016 : 0.010);   // シェイカー8分（裏を少し強く）
+        }
+        return t + total * B;
+      }
       function startBGM() {
         bgmGain.gain.cancelScheduledValues(actx.currentTime);
         bgmGain.gain.setValueAtTime(1, actx.currentTime);
         nextBar = actx.currentTime + 0.1; phraseFlip = false;
         bgmTimer = setInterval(() => {
           while (nextBar < actx.currentTime + 0.9) {
-            nextBar = schedulePhrase(nextBar, phraseFlip);
+            // 花火の時間（19時〜深夜1時）は祭囃子、それ以外は竹林BGM（__meimeiBGMModeで試聴切替可）
+            const matsuri = window.__meimeiBGMMode
+              ? window.__meimeiBGMMode === 'matsuri'
+              : (new Date().getHours() >= 19 || new Date().getHours() < 1);
+            nextBar = (matsuri ? schedulePhrase : scheduleBamboo)(nextBar, phraseFlip);
             phraseFlip = !phraseFlip;
           }
         }, 250);
