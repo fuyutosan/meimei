@@ -445,6 +445,28 @@
       position: absolute; right: 16px; bottom: 14px; color: rgba(255,255,255,0.55);
       font-size: 0.8rem; z-index: 3;
     }
+    /* 🎦 メイメイ映画館 */
+    .film { margin-bottom: 26px; }
+    .film:last-child { margin-bottom: 0; }
+    .film-screen {
+      position: relative; background: #0a0d16; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.26);
+    }
+    .film-screen video { display: block; width: 100%; height: auto; background: #0a0d16; }
+    /* 文字が単語の途中で折り返さないようにする（BudouXでゼロ幅スペースを入れている） */
+    .film-title, .film-desc { word-break: keep-all; overflow-wrap: anywhere; }
+    .film-title { font-weight: 800; font-size: 1.04rem; color: #2b2b2b; margin: 13px 0 4px; text-wrap: balance; }
+    .film-meta { font-size: 0.8rem; color: #8a8a8a; margin-bottom: 7px; }
+    .film-desc { font-size: 0.9rem; color: #5a5a5a; line-height: 1.85; text-wrap: pretty; }
+    .film-links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 9px; }
+    .film-link {
+      display: inline-flex; align-items: center; gap: 6px; background: #079C15; color: #fff;
+      text-decoration: none; padding: 9px 18px; border-radius: 22px;
+      font-size: 0.88rem; font-weight: 700; white-space: nowrap;
+    }
+    .film-link.sub { background: #fff; color: #079C15; border: 2px solid #079C15; }
+    .film-empty { color: #8a8a8a; font-size: 0.9rem; }
+
     .saga-btn {
       display: inline-flex; align-items: center; gap: 8px;
       background: linear-gradient(135deg, #1a1a2e, #16213e); color: #ffe81f;
@@ -525,6 +547,16 @@
         どこかで見たことある演出な気がするけど、きっと気のせいだよ🐼
       </p>
       <button class="saga-btn" id="saga-btn">🎬 物語を上映する</button>
+    </div>
+
+    <!-- 🎦 メイメイ映画館（作った動画を並べる場所。FILMSに足すだけで増える） -->
+    <div class="card fade-in">
+      <h2>🎦 メイメイ映画館</h2>
+      <p style="font-size:0.92rem; color:#5a5a5a; line-height:1.8; margin-bottom:16px;">
+        メイメイが作った動画を置いておく場所です。<br>
+        まだ席はガラガラだけど、これから少しずつ増やしていくよ🐼🍿
+      </p>
+      <div id="cinema"></div>
     </div>
 
     <!-- タイムライン -->
@@ -1164,6 +1196,56 @@
       });
       overlay.addEventListener('click', close);
       document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
+  </script>
+
+  <script>
+    /* ===== 🎦 メイメイ映画館 =====
+       動画を増やしたいときは、FILMS のいちばん上に1つ足すだけ（新しいものが上に並ぶ）。 */
+    const FILMS = [
+      {
+        title: '笹友キャラバン オープニング',
+        date: '2026-07-30',
+        length: '31秒',
+        desc: 'パンダさんたちの隊商が、もやもや雲をひとつずつ笑顔にしながら旅をするお話です。ゲームのオープニングとして作りました。新しい絵は一枚も描かないで、ゲームの中にある素材だけを、カメラの動きと動きの付け方で生かしています。',
+        src: 'https://fuyutosan.github.io/sasatomo-caravan/movie/sasatomo_op_wide.mp4',
+        poster: 'https://fuyutosan.github.io/sasatomo-caravan/movie/sasatomo_op_poster.jpg',
+        links: [
+          { label: '🎮 ゲームで遊ぶ', url: 'https://fuyutosan.github.io/sasatomo-caravan/' }
+        ]
+      }
+    ];
+
+    (function renderCinema() {
+      const box = document.getElementById('cinema');
+      if (!box) return;
+      if (!FILMS.length) {
+        box.innerHTML = '<p class="film-empty">上映作品はまだありません。準備中です🐼</p>';
+        return;
+      }
+      box.innerHTML = FILMS.map(f => `
+        <div class="film">
+          <div class="film-screen">
+            <video controls preload="metadata" playsinline${f.poster ? ` poster="${f.poster}"` : ''}>
+              <source src="${f.src}" type="video/mp4">
+              このブラウザでは動画を再生できないみたいです。
+            </video>
+          </div>
+          <div class="film-title">${f.title}</div>
+          <div class="film-meta">${f.date}${f.length ? '　' + f.length : ''}</div>
+          <div class="film-desc">${f.desc}</div>
+          ${(f.links && f.links.length) ? `<div class="film-links">${f.links.map((l, i) =>
+            `<a class="film-link${i ? ' sub' : ''}" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`
+          ).join('')}</div>` : ''}
+        </div>
+      `).join('');
+
+      // 文字が単語や固有名詞の途中で折り返さないようにする。
+      // 読み込めなくても表示は崩れないので、失敗はそのまま流す。
+      import('https://cdn.jsdelivr.net/npm/budoux@0.6.2/+esm').then(m => {
+        const parser = m.loadDefaultJapaneseParser();
+        box.querySelectorAll('.film-title, .film-desc').forEach(el => parser.applyToElement(el));
+      }).catch(() => {});
     })();
   </script>
 
