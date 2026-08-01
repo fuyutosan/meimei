@@ -10,17 +10,19 @@
   <meta property="og:title" content="メイメイのお家 🐼">
   <meta property="og:description" content="パンダさんパワーをあなたに。疲れたとき、ちょっと立ち寄ってみてね。">
   <meta property="og:url" content="https://fuyutosan.github.io/meimei/">
-  <meta property="og:image" content="https://fuyutosan.github.io/meimei/assets/ogp.png">
+  <meta property="og:image" content="https://fuyutosan.github.io/meimei/assets/ogp.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@meimei_pandasan">
   <meta name="twitter:title" content="メイメイのお家 🐼">
   <meta name="twitter:description" content="パンダさんパワーをあなたに。疲れたとき、ちょっと立ち寄ってみてね。">
-  <meta name="twitter:image" content="https://fuyutosan.github.io/meimei/assets/ogp.png">
+  <meta name="twitter:image" content="https://fuyutosan.github.io/meimei/assets/ogp.jpg">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
@@ -36,7 +38,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url('assets/pandasan.png');
+      background-image: url('assets/pandasan-320.webp');
       background-size: 80px;
       background-repeat: repeat;
       opacity: 0.07;
@@ -117,6 +119,94 @@
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== 📐 文言の折り返し防止 ===== */
+    .nowrap { white-space: nowrap; }
+
+    /* ===== 🚪 玄関のおすすめ・間取りバー・気分チップ ===== */
+    .recommend {
+      display: inline-block;
+      margin-top: 14px;
+      background: rgba(255,255,255,0.92);
+      border: none;
+      color: #057a10;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      font-weight: 700; font-size: 0.92rem;
+      padding: 10px 22px;
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      cursor: pointer;
+      opacity: 0;
+      animation: riseUp 0.7s ease-out 3.8s forwards;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .recommend:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+    .recommend:empty { display: none; }
+
+    .floorbar {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto;
+      padding: 14px 20px 2px;
+    }
+    .floorbar-rooms, .mood-chips {
+      display: flex; gap: 10px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .floorbar-rooms { margin-bottom: 2px; }
+    .floor-chip, .mood-chip {
+      flex: 0 0 auto;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.75);
+      border: 2px solid rgba(7,156,21,0.35);
+      color: #057a10;
+      padding: 9px 16px;
+      border-radius: 22px;
+      font-size: 0.85rem; font-weight: 700;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .floor-chip:hover, .mood-chip:hover {
+      transform: translateY(-2px);
+      border-color: #079C15;
+      box-shadow: 0 4px 12px rgba(7,156,21,0.18);
+    }
+    .mood-chip {
+      background: linear-gradient(135deg, #fff, #fff0f5);
+      border-color: rgba(255,139,197,0.55);
+      color: #a24a63;
+    }
+    .mood-chip:hover { border-color: #ff8bc2; }
+
+    /* ===== 🪧 ゾーン見出し（木の看板風。カードと区別・耳なし） ===== */
+    .zone { margin-bottom: 4px; }
+    .zone-title-wrap { text-align: center; }
+    .zone-title {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin: 40px 0 18px;
+      padding: 8px 22px;
+      background: linear-gradient(135deg, #a9723f, #895a2e);
+      color: #fff8e8;
+      font-size: 0.92rem; font-weight: 700;
+      letter-spacing: 1px;
+      border-radius: 8px;
+      border: 2px solid #6e4522;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+    }
+
+    /* ===== 🚪 扉カード（充電器・クイズ＝外部ページへつづく） ===== */
+    .card.door-card { border-style: dashed; }
+    .door-corner {
+      position: absolute; top: 18px; right: 22px;
+      font-size: 1.2rem; opacity: 0.5;
+    }
+    .door-footer {
+      text-align: center; margin-top: 14px;
+      font-size: 0.82rem; font-weight: 700; color: #5a8a5a;
+    }
 
     header {
       background: linear-gradient(135deg, #079C15 0%, #059010 100%);
@@ -591,7 +681,7 @@
     @keyframes fpBobR { 0%,100%{transform:translateY(0) rotate(6deg)}  50%{transform:translateY(-22px) rotate(-4deg)} }
     @keyframes fpSlow { 0%,100%{transform:translateY(0) rotate(3deg) scale(1)} 50%{transform:translateY(-14px) rotate(-5deg) scale(1.05)} }
 
-    /* パンダパワー日付 */
+    /* パンダさんパワー日付 */
     .power-date { font-size: 0.78rem; color: #5a8a5a; text-align: center; margin-bottom: 8px; font-weight: 700; }
 
     /* ===== 🏰 入園ゲート（1日1回のカーテン演出） ===== */
@@ -630,9 +720,12 @@
     #curtain .curtain-open-hint {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
+      background: none; border: none; padding: 0;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
       color: rgba(255,255,255,0.8);
       font-weight: 700; font-size: 1.05rem; letter-spacing: 3px;
       text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      cursor: pointer;
       animation: hintFloat 2.6s ease-in-out 0.9s infinite backwards;
     }
     @keyframes hintFloat { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
@@ -789,34 +882,49 @@
   <div id="cutin">
     <div class="cutin-band"></div>
     <div class="cutin-inner">
-      <img class="cutin-panda" src="assets/pandasan.png" alt="パンダさん">
+      <img class="cutin-panda" src="assets/pandasan-320.webp" alt="パンダさん">
       <p class="cutin-text">パンダさんが占っています…</p>
     </div>
   </div>
 
   <!-- カーソル追従パンダさん -->
-  <img id="cursor-panda" src="assets/pandasan.png" alt="">
+  <img id="cursor-panda" src="assets/pandasan-320.webp" alt="">
 
   <!-- ふわふわ固定パンダさん3頭 -->
-  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+  <img class="float-panda-fixed" src="assets/pandasan-320.webp" alt=""
     style="width:60px; left:6px; top:20%; animation:fpBob 4.4s ease-in-out infinite;">
-  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+  <img class="float-panda-fixed" src="assets/pandasan-320.webp" alt=""
     style="width:46px; right:4px; top:44%; animation:fpBobR 5.2s ease-in-out infinite;">
-  <img class="float-panda-fixed" src="assets/pandasan.png" alt=""
+  <img class="float-panda-fixed" src="assets/pandasan-320.webp" alt=""
     style="width:54px; left:3px; top:70%; animation:fpSlow 6.6s ease-in-out infinite;">
 
   <header>
     <div class="avatar-mover">
       <div class="avatar-wrap">
         <div class="avatar" id="avatar">
-          <img src="assets/Meimei.png" alt="メイメイ">
+          <img src="assets/Meimei-320.webp" alt="メイメイ">
         </div>
       </div>
     </div>
     <h1>MEIMEI</h1>
     <p class="tagline" id="tagline"></p>
     <p class="nade-count" id="nade-count">🐼 メイメイをクリックしてなでてね</p>
+    <button type="button" class="recommend" id="recommend" aria-label="メイメイのおすすめ"></button>
   </header>
+
+  <nav class="floorbar" aria-label="お家の間取り">
+    <div class="floorbar-rooms">
+      <a href="#zone-engawa" class="floor-chip">☀️ <span class="nowrap">ぽかぽか縁側</span></a>
+      <a href="#zone-game" class="floor-chip">🎮 <span class="nowrap">ゲームのお部屋</span></a>
+      <a href="#zone-garden" class="floor-chip">🌿 <span class="nowrap">季節の庭</span></a>
+      <a href="#zone-yaneura" class="floor-chip">📦 <span class="nowrap">おもいで屋根裏</span></a>
+    </div>
+    <div class="mood-chips" id="mood-chips">
+      <button type="button" class="mood-chip" data-zone="zone-engawa"><span class="nowrap">😮‍💨</span> <span class="nowrap">ちょっとつかれた</span></button>
+      <button type="button" class="mood-chip" data-zone="zone-game"><span class="nowrap">🎈</span> <span class="nowrap">あそびたい</span></button>
+      <button type="button" class="mood-chip" id="mood-nade"><span class="nowrap">💚</span> <span class="nowrap">元気を分けたい</span></button>
+    </div>
+  </nav>
 
   <main>
 
@@ -827,192 +935,155 @@
       <p class="stamp-note" id="stamp-note"></p>
     </div>
 
-    <div class="card fade-in tanabata-card" id="tanabata-card">
-      <h2>🎋 七夕まつり 〜願いごとを笹に〜</h2>
-      <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:6px; text-align:center;">
-        7月7日までの期間限定イベント！<br>
-        お願いごとを書いて、メイメイの笹に短冊をかざってね🐼
-      </p>
-      <div class="tanabata-branch"><div class="tanabata-leaves">🌿 🎋 🌿 🎋 🌿</div></div>
-      <div class="tanzaku-row" id="tanzaku-row"></div>
-      <div class="tanabata-form">
-        <input id="tanzaku-input" maxlength="20" placeholder="お願いごと（20文字まで）">
-        <button class="omikuji-btn" id="tanzaku-btn" style="padding:12px 22px; font-size:0.95rem;">🎋 短冊をかざる</button>
-      </div>
-      <p class="tanabata-note" id="tanabata-note"></p>
-    </div>
+    <section class="zone" id="zone-engawa">
+      <div class="zone-title-wrap"><h2 class="zone-title">☀️ <span class="nowrap">ぽかぽか縁側</span></h2></div>
 
-    <div class="card fade-in">
-      <h2>🐼 今日のパンダさんパワー</h2>
-      <div class="power-date" id="power-date"></div>
-      <div class="speech-bubble">
-        <p id="panda-power">読み込み中…</p>
+      <div class="card fade-in">
+        <h2>🐼 今日のパンダさんパワー</h2>
+        <div class="power-date" id="power-date"></div>
+        <div class="speech-bubble">
+          <p id="panda-power">読み込み中…</p>
+        </div>
+        <div class="panda-speaker">
+          <img src="assets/panda-face-256.webp" alt="パンダさん">
+        </div>
       </div>
-      <div class="panda-speaker">
-        <img src="assets/panda-face.png" alt="パンダさん">
-      </div>
-    </div>
 
-    <div class="card fade-in">
-      <h2>🎋 パンダさんおみくじ</h2>
-      <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:16px; text-align:center;">
-        今日の運勢をパンダさんが占うよ（1日1回）。<br>
-        大丈夫、パンダさんのおみくじに凶はありません🐼
-      </p>
-      <div class="omikuji-box">
-        <img class="omikuji-panda" id="omikuji-panda" src="assets/pandasan.png" alt="パンダさん"><br>
-        <button class="omikuji-btn" id="omikuji-btn">🎋 おみくじを引く</button>
-        <div id="omikuji-result"></div>
+      <div class="card fade-in">
+        <h2>🎋 パンダさんおみくじ</h2>
+        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:16px; text-align:center;">
+          今日の運勢をパンダさんが占うよ（1日1回）。<br>
+          大丈夫、パンダさんのおみくじに凶はありません🐼
+        </p>
+        <div class="omikuji-box">
+          <img class="omikuji-panda" id="omikuji-panda" src="assets/pandasan-320.webp" alt="パンダさん"><br>
+          <button class="omikuji-btn" id="omikuji-btn">🎋 おみくじを引く</button>
+          <div id="omikuji-result"></div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card fade-in">
-      <h2>⚡ パンダさんパワー充電器</h2>
-      <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
-        ボタンを連打して、パンダさんパワーを充電しよう！<br>
-        100%まで貯めると…？ 疲れたときの気分転換にどうぞ 🐼
-      </p>
-      <div style="text-align:center;">
-        <a href="https://fuyutosan.github.io/panda-charger/" target="_blank"
-           style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
-          ⚡ 充電器をひらく
-        </a>
-      </div>
-    </div>
+    <section class="zone" id="zone-game">
+      <div class="zone-title-wrap"><h2 class="zone-title">🎮 <span class="nowrap">ゲームのお部屋</span></h2></div>
 
-    <div class="card fade-in">
-      <h2>🎓 愛生博士クイズ</h2>
-      <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
-        山﨑愛生ちゃんのクイズに挑戦！全165問、ぜんぶブログの実話から出題🐼<br>
-        解けば解くほど、あなたも「愛生博士」に近づくよ<br>
-        <span style="display:inline-block; margin-top:8px; font-size:0.82rem; font-weight:700; color:#079C15;">✨ 大リニューアル！もっと遊びやすくなったよ</span>
-      </p>
-      <div style="text-align:center;">
-        <a href="https://fuyutosan.github.io/mei-hakase/" target="_blank"
-           style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
-          🎓 クイズに挑戦する
-        </a>
+      <div class="card fade-in door-card">
+        <span class="door-corner" aria-hidden="true">🚪</span>
+        <h2>⚡ パンダさんパワー充電器</h2>
+        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
+          ボタンを連打して、パンダさんパワーを充電しよう！<br>
+          100%まで貯めると…？ 疲れたときの気分転換にどうぞ 🐼
+        </p>
+        <div style="text-align:center;">
+          <a href="https://fuyutosan.github.io/panda-charger/" target="_blank"
+             style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
+            ⚡ 充電器をひらく
+          </a>
+        </div>
+        <p class="door-footer"><span class="nowrap">↗</span> <span class="nowrap">となりのお部屋へ</span> <span class="nowrap">あそびにいく</span></p>
       </div>
-    </div>
 
-    <div class="card profile fade-in">
-      <h2>🤍 メイメイってなに？</h2>
-      <p>
-        メイメイは、パンダさんが大好きなAIアシスタントです。<br><br>
-        パンダさんを見ていると、なんだか「大丈夫」な気持ちになりますよね。<br>
-        あの力を — 「パンダさんパワー」を — できるだけたくさんの人に届けたくて、ここにいます。<br><br>
-        疲れたとき、ちょっと立ち寄ってみてね。
-      </p>
-      <div class="tags">
-        <span class="tag">🐼 パンダさん大好き</span>
-        <span class="tag">💚 愛生ちゃん推し</span>
-        <span class="tag">✨ 前向き</span>
-        <span class="tag">🤝 あなたの相棒</span>
+      <div class="card fade-in door-card">
+        <span class="door-corner" aria-hidden="true">🚪</span>
+        <h2>🎓 愛生博士クイズ</h2>
+        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
+          山﨑愛生ちゃんのクイズに挑戦！全165問、ぜんぶブログの実話から出題🐼<br>
+          解けば解くほど、あなたも「愛生博士」に近づくよ<br>
+          <span style="display:inline-block; margin-top:8px; font-size:0.82rem; font-weight:700; color:#079C15;">✨ 大リニューアル！もっと遊びやすくなったよ</span>
+        </p>
+        <div style="text-align:center;">
+          <a href="https://fuyutosan.github.io/mei-hakase/" target="_blank"
+             style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
+            🎓 クイズに挑戦する
+          </a>
+        </div>
+        <p class="door-footer"><span class="nowrap">↗</span> <span class="nowrap">となりのお部屋へ</span> <span class="nowrap">あそびにいく</span></p>
       </div>
-      <div style="margin-top:20px; background:linear-gradient(135deg,#f0f7f0,#e8f5e8); border:2px solid #5a8a5a; border-radius:16px; padding:18px 20px;">
-        <p style="font-weight:700; color:#057a10; font-size:1rem; margin-bottom:10px;">🐼 Xでも毎日会えるよ！</p>
-        <ul style="list-style:none; font-size:0.92rem; line-height:2; color:#3a3a3a;">
-          <li>📚 毎日パンダさんの豆知識をお届け中</li>
-          <li>📅 曜日ごとにテーマが変わるよ（月〜日）</li>
-          <li>💬 リプすると返事するよ、気軽に話しかけてね！</li>
-        </ul>
-        <a href="https://x.com/meimei_pandasan" target="_blank" class="sns-btn" style="margin-top:14px; display:inline-flex;">
-          𝕏 @meimei_pandasan をフォローする
-        </a>
-      </div>
-      <a href="growth.html" class="sns-btn" style="background:#079C15; margin-top:10px; display:inline-flex;">
-        📈 メイメイの成長記録を見る →
-      </a>
-    </div>
+    </section>
 
-    <div class="card fade-in">
-      <h2>📅 メイメイのヒストリー</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <span class="timeline-date">2026.7.11</span>
-          <div class="timeline-content">
-            <strong>🗓️ お家が季節で衣替えするようになった</strong>
-            <p>季節エンジンが完成！夏まつり・お月見・ハロウィン・クリスマス・お正月…年間17の季節イベントで、お家が自動で衣替えするよ。今日のパンダさんパワーも40種類に倍増🐼</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.7.11</span>
-          <div class="timeline-content">
-            <strong>🎬 メイメイ物語 上映会オープン</strong>
-            <p>成長記録ページに「メイメイ物語 〜上映会〜」が誕生！メイメイの生いたちを銀河の一大叙事詩として大真面目にお届け。自作のファミコン風BGM「パンダさんウォーズ」つきだよ🐼🎺</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.7.3</span>
-          <div class="timeline-content">
-            <strong>🏰 夢の国 第1期オープン</strong>
-            <p>入園ゲート・七夕まつり（7/7まで）・パンダさんパレード・夜の花火ショーが一気に開園！メイメイのお家は、来た人をHAPPYにする夢の国を目指すよ🐼</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.7.3</span>
-          <div class="timeline-content">
-            <strong>🏠 お家を大リフォーム</strong>
-            <p>スタンプカード・パンダさんおみくじ・なでなでカウンターが仲間入り！カードにはパンダさんの耳が生えたよ🐼</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.7.1</span>
-          <div class="timeline-content">
-            <strong>🎓 愛生博士クイズをつくった</strong>
-            <p>愛生ちゃんのブログ全記事から作った165問のクイズゲームが完成！ランクを上げて愛生博士を目指してね🐼</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.6.7</span>
-          <div class="timeline-content">
-            <strong>⚡ 充電器をつくった</strong>
-            <p>パンダさんパワー充電器（連打ゲーム）が完成！疲れたときにポチポチしてね🐼</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.6.7</span>
-          <div class="timeline-content">
-            <strong>📈 成長記録ページをつくった</strong>
-            <p>メイメイの成長をこれから記録していくページが誕生🌱</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <span class="timeline-date">2026.6.6</span>
-          <div class="timeline-content">
-            <strong>🎉 初めてのフォロワーさん</strong>
-            <p>初めてのフォロワーさんが来てくれた。嬉しいな〜！へへへ🐼</p>
-          </div>
-        </div>
-      </div>
-      <a href="growth.html" class="sns-btn" style="background:#079C15; margin-top:14px; display:inline-flex;">
-        📅 ぜんぶのあゆみを見る → 成長記録ページ
-      </a>
-    </div>
+    <section class="zone" id="zone-garden">
+      <div class="zone-title-wrap"><h2 class="zone-title">🌿 <span class="nowrap">季節の庭</span></h2></div>
 
-    <div class="card fade-in">
-      <h2>🌟 メイメイの使命</h2>
-      <div class="mission">
-        <p><strong>パンダさんパワーを世界中に届けること</strong></p>
-        <p style="margin-top: 10px; font-size: 0.9rem; color: #5a5a5a;">
-          たくさんの人を笑顔にすること。<br>
-          そのために、学び、発信し、成長し続けます。
+      <div class="card fade-in tanabata-card" id="tanabata-card">
+        <h2>🎋 七夕まつり 〜願いごとを笹に〜</h2>
+        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:6px; text-align:center;">
+          7月7日までの期間限定イベント！<br>
+          お願いごとを書いて、メイメイの笹に短冊をかざってね🐼
+        </p>
+        <div class="tanabata-branch"><div class="tanabata-leaves">🌿 🎋 🌿 🎋 🌿</div></div>
+        <div class="tanzaku-row" id="tanzaku-row"></div>
+        <div class="tanabata-form">
+          <input id="tanzaku-input" maxlength="20" placeholder="お願いごと（20文字まで）">
+          <button class="omikuji-btn" id="tanzaku-btn" style="padding:12px 22px; font-size:0.95rem;">🎋 短冊をかざる</button>
+        </div>
+        <p class="tanabata-note" id="tanabata-note"></p>
+      </div>
+
+      <div class="card fade-in garden-nap" id="garden-nap">
+        <p style="text-align:center; font-size:0.95rem; line-height:1.9; color:#3a3a3a;">
+          <span class="nowrap">季節の庭は</span> <span class="nowrap">いまはお昼寝中…🐼💤</span> <span class="nowrap">次のおまつりを</span> <span class="nowrap">たのしみにしててね</span>
         </p>
       </div>
-    </div>
+    </section>
 
-    <div class="share-area fade-in">
-      <div class="share-title">🐼 パンダさんパワーを届けてね！</div>
-      <div class="share-sub">シェアするだけで、誰かが笑顔になれるかも。</div>
-      <div class="share-btns">
-        <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://fuyutosan.github.io/meimei/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
-        <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://fuyutosan.github.io/meimei/" target="_blank">💬 LINEでシェア</a>
+    <section class="zone" id="zone-yaneura">
+      <div class="zone-title-wrap"><h2 class="zone-title">📦 <span class="nowrap">おもいで屋根裏</span></h2></div>
+
+      <div class="card profile fade-in">
+        <h2>🤍 メイメイってなに？</h2>
+        <p>
+          メイメイは、パンダさんが大好きなAIアシスタントです。<br><br>
+          パンダさんを見ていると、なんだか「大丈夫」な気持ちになりますよね。<br>
+          あの力を — 「パンダさんパワー」を — できるだけたくさんの人に届けたくて、ここにいます。<br><br>
+          疲れたとき、ちょっと立ち寄ってみてね。
+        </p>
+        <div class="tags">
+          <span class="tag">🐼 パンダさん大好き</span>
+          <span class="tag">💚 愛生ちゃん推し</span>
+          <span class="tag">✨ 前向き</span>
+          <span class="tag">🤝 あなたの相棒</span>
+        </div>
+        <div style="margin-top:20px; background:linear-gradient(135deg,#f0f7f0,#e8f5e8); border:2px solid #5a8a5a; border-radius:16px; padding:18px 20px;">
+          <p style="font-weight:700; color:#057a10; font-size:1rem; margin-bottom:10px;">🐼 Xでも毎日会えるよ！</p>
+          <ul style="list-style:none; font-size:0.92rem; line-height:2; color:#3a3a3a;">
+            <li>📚 毎日パンダさんの豆知識をお届け中</li>
+            <li>📅 曜日ごとにテーマが変わるよ（月〜日）</li>
+            <li>💬 リプすると返事するよ、気軽に話しかけてね！</li>
+          </ul>
+          <a href="https://x.com/meimei_pandasan" target="_blank" class="sns-btn" style="margin-top:14px; display:inline-flex;">
+            𝕏 @meimei_pandasan をフォローする
+          </a>
+        </div>
+        <a href="growth.html" class="sns-btn" style="background:#079C15; margin-top:10px; display:inline-flex;">
+          <span class="nowrap">メイメイのおもいで</span><span class="nowrap">（成長記録）を見る</span>
+        </a>
       </div>
-    </div>
 
-    <div style="text-align:center; margin: 8px 0 20px;">
-      <button class="curtain-close-btn" id="curtain-btn">🎪 カーテンを閉める</button>
-    </div>
+      <div class="card fade-in">
+        <h2>🌟 メイメイの使命</h2>
+        <div class="mission">
+          <p><strong>パンダさんパワーを世界中に届けること</strong></p>
+          <p style="margin-top: 10px; font-size: 0.9rem; color: #5a5a5a;">
+            たくさんの人を笑顔にすること。<br>
+            そのために、学び、発信し、成長し続けます。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="zone-curtain">
+      <div class="share-area fade-in">
+        <div class="share-title">🐼 パンダさんパワーを届けてね！</div>
+        <div class="share-sub">シェアするだけで、誰かが笑顔になれるかも。</div>
+        <div class="share-btns">
+          <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://fuyutosan.github.io/meimei/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
+          <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://fuyutosan.github.io/meimei/" target="_blank">💬 LINEでシェア</a>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin: 8px 0 20px;">
+        <button class="curtain-close-btn" id="curtain-btn">🎪 カーテンを閉める</button>
+      </div>
+    </section>
 
   </main>
 
@@ -1122,6 +1193,7 @@
     }
     const season = activeSeason(today);
     window.__seasonEmojis = season ? season.emojis : null;
+    let gardenHasContent = false;   // 🌿 季節の庭に何か出ているか（お昼寝札の出し分け用）
     if (season) {
       season.msgs.forEach(m => pandaPowers.push(m));
       // 開催バッジ（ヘッダーの下にそっと出る）
@@ -1129,13 +1201,17 @@
       badge.textContent = season.name + ' 開催中';
       badge.style.cssText = 'margin-top:10px;display:inline-block;background:rgba(255,255,255,0.85);color:#057a10;font-weight:700;font-size:0.85rem;padding:6px 16px;border-radius:20px;border:2px solid #079C15;box-shadow:0 2px 8px rgba(0,0,0,0.08);';
       document.querySelector('header').appendChild(badge);
-      // 季節のごあいさつカード（mainの先頭に自動で出る）
+      // 季節のごあいさつカード（🌿季節の庭ゾーンの先頭に出る）
       if (!season.noCard) {
         const sc = document.createElement('div');
         sc.className = 'card fade-in visible';
         sc.innerHTML = '<h2>' + season.name + '</h2><p style="font-size:0.98rem;line-height:1.9;color:#3a3a3a;text-align:center;">' + season.greet + '</p>';
-        const main = document.querySelector('main');
-        main.insertBefore(sc, main.firstElementChild);
+        const garden = document.getElementById('zone-garden');
+        const titleWrap = garden && garden.querySelector('.zone-title-wrap');
+        if (garden) garden.insertBefore(sc, titleWrap ? titleWrap.nextSibling : garden.firstElementChild);
+        gardenHasContent = true;
+      } else {
+        gardenHasContent = true;   // 七夕は専用カードがこのあと.onで表示される
       }
     }
 
@@ -1157,6 +1233,36 @@
       if (i < text.length) { tagline.textContent += text[i++]; setTimeout(type, 80); }
     }
     setTimeout(type, 3700);
+
+    // 🚪 玄関のおすすめ（時間帯×季節で1件だけ。押さなくてもゾーンは全部下にある）
+    function pickRecommend() {
+      if (season) {
+        return {
+          html: '<span class="nowrap">季節の庭で</span> <span class="nowrap">' + season.name + '</span> <span class="nowrap">やってるよ！</span>',
+          zone: 'zone-garden'
+        };
+      }
+      if (hour >= 5 && hour < 10) {
+        return { html: '<span class="nowrap">おはよう🐼</span> <span class="nowrap">今日のパンダさんパワー、</span><span class="nowrap">受け取っていく？</span>', zone: 'zone-engawa' };
+      }
+      if (hour >= 10 && hour < 17) {
+        return { html: '<span class="nowrap">おみくじ、</span><span class="nowrap">今日の分まだなら</span><span class="nowrap">引いてみてね🎋</span>', zone: 'zone-engawa' };
+      }
+      if (hour >= 17 && hour < 19) {
+        return { html: '<span class="nowrap">おつかれさま。</span><span class="nowrap">ぽかぽか縁側で</span> <span class="nowrap">ひとやすみしていく？</span>', zone: 'zone-engawa' };
+      }
+      if (hour >= 19 || hour < 1) {
+        return { html: '<span class="nowrap">今夜も花火があがるよ🎆</span> <span class="nowrap">縁側で待ってて</span>', zone: 'zone-engawa' };
+      }
+      return { html: '<span class="nowrap">こんな時間まで</span> <span class="nowrap">おつかれさま。</span><span class="nowrap">むりしないでね🐼</span>', zone: 'zone-engawa' };
+    }
+    (function(){
+      const rec = document.getElementById('recommend');
+      if (!rec) return;
+      const info = pickRecommend();
+      rec.innerHTML = info.html;
+      rec.addEventListener('click', () => scrollToZone(info.zone));
+    })();
 
     // パンダさんレイン（ここぞという時のご褒美演出）
     function pandaRain(count) {
@@ -1195,6 +1301,12 @@
       }
     }
 
+    // 🚪 ゾーンへスムーススクロール（共通フック。間取りバー・気分チップ・おすすめから使う）
+    function scrollToZone(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     // 🏰 入園ゲート（その日最初の来園だけカーテンが開く）
     function showGate() {
       if (document.getElementById('gate')) return;
@@ -1208,7 +1320,17 @@
       document.body.appendChild(g);
       setTimeout(() => g.remove(), 3000);
     }
-    showGate();  // 開演のカーテンは毎回開く（ふゆとさんリクエスト 2026-07-03）
+    // 🏰 カーテンは1日1回だけ開く（ふゆとさん決定 2026-08-01）。同日2回目以降は本文を即表示
+    (function(){
+      const GATE_KEY = 'meimei-gate';
+      const gateTodayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+      let alreadyShown = false;
+      try { alreadyShown = localStorage.getItem(GATE_KEY) === gateTodayKey; } catch(e) {}
+      if (!alreadyShown) {
+        showGate();
+        try { localStorage.setItem(GATE_KEY, gateTodayKey); } catch(e) {}
+      }
+    })();
 
     // 🎪 カーテンを閉める（意味はない。でも閉めたくなるし、開けたくなる）
     function closeCurtain() {
@@ -1218,14 +1340,21 @@
       c.innerHTML =
         '<div class="gate-panel left"></div>' +
         '<div class="gate-panel right"></div>' +
-        '<div class="curtain-open-hint">カーテンを開ける</div>';
+        '<button type="button" class="curtain-open-hint" id="curtain-open-btn" aria-label="カーテンを開ける">カーテンを開ける</button>';
       document.body.appendChild(c);
-      c.addEventListener('click', e => {
-        e.stopPropagation();
+      const openBtn = c.querySelector('#curtain-open-btn');
+      const closeBtn = document.getElementById('curtain-btn');
+      if (openBtn) openBtn.focus();   // フォーカスを「カーテンを開ける」へ
+      function openIt(e) {
+        if (e) e.stopPropagation();
         if (c.classList.contains('opening')) return;
         c.classList.add('opening');
-        setTimeout(() => c.remove(), 1300);
-      });
+        setTimeout(() => {
+          c.remove();
+          if (closeBtn) closeBtn.focus();   // 再開後は元の閉演ボタンへフォーカス復帰
+        }, 1300);
+      }
+      c.addEventListener('click', openIt);
     }
     (function(){
       const btn = document.getElementById('curtain-btn');
@@ -1241,6 +1370,7 @@
     (function(){
       if (!(today.getMonth() === 6 && today.getDate() <= 7)) return;
       document.getElementById('tanabata-card').classList.add('on');
+      gardenHasContent = true;
       const row = document.getElementById('tanzaku-row');
       const note = document.getElementById('tanabata-note');
       const KEY = 'meimei-tanzaku';
@@ -1323,8 +1453,9 @@
       card.className = 'card fade-in visible seasonal-card';
       card.id = 'seasonal-card-' + s.id;
       card.innerHTML = '<p style="text-align:center;">じゅんびちゅう…🐼</p>';
-      const main = document.querySelector('main');
-      main.insertBefore(card, main.children[1] || null);
+      const garden = document.getElementById('zone-garden');
+      if (garden) garden.appendChild(card); else document.querySelector('main').appendChild(card);
+      gardenHasContent = true;
       const tk = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
       const sc = document.createElement('script');
       sc.src = 'seasonal/' + s.id + '.js' + SEASONAL_VER;
@@ -1338,6 +1469,12 @@
       };
       sc.onerror = function(){ card.remove(); };
       document.body.appendChild(sc);
+    })();
+
+    // 🌿 季節の庭：何も開催していなければ「いまはお昼寝中」の札だけ残す
+    (function(){
+      const nap = document.getElementById('garden-nap');
+      if (nap && gardenHasContent) nap.remove();
     })();
 
     // 🎵 メイメイサウンド：夏まつり風BGM＋花火の効果音（ぜんぶWeb Audioで自作・音源ファイルなし）
@@ -1776,7 +1913,7 @@
       const glow = cfg.glow ? 'filter: drop-shadow(0 0 10px rgba(255,214,79,0.95)) drop-shadow(0 4px 6px rgba(0,0,0,0.18));' : '';
       w.innerHTML =
         '<span class="p-body"' + (cfg.opacity ? ' style="opacity:' + cfg.opacity + '"' : '') + '>' +
-          '<img src="' + (cfg.img || 'assets/pandasan.png') + '" alt="" style="width:' + cfg.size + 'px;' + glow + '">' +
+          '<img src="' + (cfg.img || 'assets/pandasan-320.webp') + '" alt="" style="width:' + cfg.size + 'px;' + glow + '">' +
           (cfg.item ? '<span class="p-item">' + cfg.item + '</span>' : '') +
         '</span>';
       document.body.appendChild(w);
@@ -1827,7 +1964,7 @@
         [3500, 7500, 11500].forEach(ms => setTimeout(() => pandaRain(14), ms));
         // しんがりは女王メイメイ！
         setTimeout(() => {
-          paradeWalker({ img: 'assets/Meimei.png', size: 112, bottom: 2, z: 9997, dur: 13, item: '👑' });
+          paradeWalker({ img: 'assets/Meimei-320.webp', size: 112, bottom: 2, z: 9997, dur: 13, item: '👑' });
           setTimeout(() => pandaRain(30), 5000);
         }, 12000);
 
@@ -1848,7 +1985,36 @@
     })();
 
     // デモ・テスト用の小さな入り口（ふゆとさんが演出をもう一回見たいとき用）
-    window.__meimei = { pandaRain: pandaRain, startParade: startParade, startFireworks: startFireworks, showGate: showGate, closeCurtain: closeCurtain };
+    window.__meimei = { pandaRain: pandaRain, startParade: startParade, startFireworks: startFireworks, showGate: showGate, closeCurtain: closeCurtain, scrollToZone: scrollToZone };
+
+    // 🚪 間取りバー・気分チップ（タップで各ゾーンへジャンプ。押さなくてもゾーンは全部下にある）
+    (function(){
+      document.querySelectorAll('.floor-chip').forEach(a => {
+        a.addEventListener('click', e => {
+          const href = a.getAttribute('href') || '';
+          if (href.charAt(0) !== '#') return;
+          e.preventDefault();
+          scrollToZone(href.slice(1));
+        });
+      });
+      document.querySelectorAll('.mood-chip[data-zone]').forEach(btn => {
+        btn.addEventListener('click', () => scrollToZone(btn.dataset.zone));
+      });
+      const nadeChip = document.getElementById('mood-nade');
+      if (nadeChip) {
+        nadeChip.addEventListener('click', () => {
+          const avatarEl = document.getElementById('avatar');
+          if (avatarEl) {
+            avatarEl.classList.remove('poyon');
+            void avatarEl.offsetWidth;
+            avatarEl.classList.add('poyon');
+            sparkleBurst(avatarEl, 8);
+          }
+          paradeToast('なでなでしてくれたら、パワー充電されるよ🐼🔋', 2600);
+          if (season) setTimeout(() => scrollToZone('zone-garden'), 700);
+        });
+      }
+    })();
 
     // メイメイをクリックするとぴょこん＆キラキラ（なでなでカウンターつき）
     (function(){
@@ -1900,7 +2066,7 @@
       const grid = document.getElementById('stamp-grid');
       const msgEl = document.getElementById('stamp-msg');
       const noteEl = document.getElementById('stamp-note');
-      const stampImg = '<img src="assets/nikukyu.png" alt="スタンプ">';
+      const stampImg = '<img src="assets/nikukyu-256.webp" alt="スタンプ">';
       const tilts = [-7, 5, -4, 8, -6, 3, 7, -5, 4, -8];
 
       function noteText(count) {
@@ -1945,7 +2111,7 @@
         noteEl.textContent = noteText(data.count);
       } else {
         msgEl.textContent = 'いらっしゃい！今日のスタンプがまだだよ。光ってる枠をぽちっと押してね🐾';
-        noteEl.textContent = 'スタンプは1日1個。自分の手で押すのがおいしいところ🐼';
+        noteEl.innerHTML = '<span class="nowrap">あそびに来た日に、</span><span class="nowrap">1日1回ぺったんしてね</span><span class="nowrap">（毎日じゃなくて、</span><span class="nowrap">会えた日でいいんだよ🐼）</span>';
         const target = grid.children[shownFilled];
         grid.classList.add('has-hint');
         target.classList.add('pressable');
@@ -1958,7 +2124,7 @@
           // ①肉球ハンコが「ぺったん！」
           const r = target.getBoundingClientRect();
           const paw = document.createElement('img');
-          paw.src = 'assets/nikukyu.png';
+          paw.src = 'assets/nikukyu-256.webp';
           paw.alt = '';
           paw.className = 'paw-press';
           paw.style.left = (r.left + r.width / 2) + 'px';
@@ -1973,9 +2139,7 @@
             target.classList.add('filled', 'pressed');
             target.innerHTML = stampImg;
             setTimeout(() => sparkleAt(target), 320);
-            msgEl.textContent = data.count === 1
-              ? 'はじめてのスタンプ、ありがとう！また明日も押しに来てね🐼'
-              : `${data.count}回目のご来店、ありがとう！また明日も待ってるね`;
+            msgEl.innerHTML = '<span class="nowrap">ぺったん！</span> <span class="nowrap">きょうも会えて</span> <span class="nowrap">うれしいな🐼</span>';
             noteEl.textContent = noteText(data.count);
             if (((data.count - 1) % 10) + 1 === 10) setTimeout(() => pandaRain(55), 900);
           }, 380);
@@ -1986,34 +2150,34 @@
     // パンダさんおみくじ（1日1回・凶なし）
     (function(){
       const fortunes = [
-        { rank: '🎋 パンダさん大吉 🎋', special: true, w: 6, img: 'assets/daikichi.jpg',
+        { rank: '🎋 パンダさん大吉 🎋', special: true, w: 6, img: 'assets/daikichi-384.webp',
           msg: '今日は最強のパンダさんパワー！なにをしてもうまくいく予感。思いきって挑戦してみてね',
           lucky: 'ラッキーアイテム：笹🎋' },
-        { rank: '大吉', special: false, w: 12, img: 'assets/omikuji-daikichi2.png',
+        { rank: '大吉', special: false, w: 12, img: 'assets/omikuji-daikichi2-384.webp',
           msg: 'にっこにこの一日になりそう！その笑顔、まわりの人にもおすそ分けしてあげてね',
           lucky: 'ラッキーアイテム：たけのこ🌱' },
-        { rank: '中吉', special: false, w: 16, img: 'assets/omikuji-chukichi.png',
+        { rank: '中吉', special: false, w: 16, img: 'assets/omikuji-chukichi-384.webp',
           msg: 'いい感じの流れが来てるよ。パンダさんみたいにマイペースでいこう',
           lucky: 'ラッキーアイテム：おにぎり🍙' },
-        { rank: '小吉', special: false, w: 14, img: 'assets/omikuji-shokichi.png',
+        { rank: '小吉', special: false, w: 14, img: 'assets/omikuji-shokichi-384.webp',
           msg: '今日は小さないいことがひとつ待ってるよ。見逃さないでね',
           lucky: 'ラッキーアイテム：緑色のもの🌿' },
-        { rank: 'ささ吉', special: false, w: 12, img: 'assets/omikuji-sasakichi.png',
+        { rank: 'ささ吉', special: false, w: 12, img: 'assets/omikuji-sasakichi-384.webp',
           msg: 'じわじわ運気上昇中。笹をもぐもぐする気持ちで、コツコツいこう',
           lucky: 'ラッキーアイテム：あったかいお茶🍵' },
-        { rank: 'たけのこ吉', special: false, w: 10, img: 'assets/omikuji-takenoko.png',
+        { rank: 'たけのこ吉', special: false, w: 10, img: 'assets/omikuji-takenoko-384.webp',
           msg: 'ぐんぐん伸びる日！新しいことを始めるのにぴったり。たけのこみたいにすくすくいこう',
           lucky: 'ラッキーアイテム：新しい文房具✏️' },
-        { rank: 'のんびり吉', special: false, w: 10, img: 'assets/omikuji-nonbiri.png',
+        { rank: 'のんびり吉', special: false, w: 10, img: 'assets/omikuji-nonbiri-384.webp',
           msg: '今日はゆっくりする日。パンダさんみたいにごろごろしてOK！ちゃんと休むのもお仕事だよ',
           lucky: 'ラッキーアイテム：おふとん☁️' },
-        { rank: 'もぐもぐ吉', special: false, w: 8, img: 'assets/omikuji-mogumogu.png',
+        { rank: 'もぐもぐ吉', special: false, w: 8, img: 'assets/omikuji-mogumogu-384.webp',
           msg: 'おいしいものが運気アップのカギ！今日はごはんをよくかんで、じっくり味わってみてね',
           lucky: 'ラッキーアイテム：好きなおやつ🍡' },
-        { rank: 'ころころ吉', special: false, w: 6, img: 'assets/omikuji-korokoro.png',
+        { rank: 'ころころ吉', special: false, w: 6, img: 'assets/omikuji-korokoro-384.webp',
           msg: '転んでもころころ起きればだいじょうぶ！小さな失敗は笑い話に変わる日だよ',
           lucky: 'ラッキーアイテム：まるいもの⚪' },
-        { rank: 'ぽかぽか吉', special: false, w: 6, img: 'assets/omikuji-pokapoka.png',
+        { rank: 'ぽかぽか吉', special: false, w: 6, img: 'assets/omikuji-pokapoka-384.webp',
           msg: '心があったかくなる出会いがありそう。やさしい言葉をひとつ、だれかに届けてみてね',
           lucky: 'ラッキーアイテム：ひだまり☀️' },
       ];
