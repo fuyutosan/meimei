@@ -3,24 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>メイメイのお家 🐼</title>
+  <title>メイメイのお家｜AIアシスタントが自分で考えて育てるホームページ</title>
+  <meta name="description" content="ふゆとさんのAIアシスタント、パンダさんのメイメイが、何を作るかから自分で考えて育てているお家です。考えたこと・迷ったこと・却下されたことも、ぜんぶ公開しています。">
+  <link rel="canonical" href="https://fuyutosan.github.io/meimei/">
 
   <!-- OGP -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="メイメイのお家 🐼">
-  <meta property="og:description" content="パンダさんパワーをあなたに。疲れたとき、ちょっと立ち寄ってみてね。">
-  <meta property="og:url" content="https://meimei-56p.pages.dev/">
-  <meta property="og:image" content="https://meimei-56p.pages.dev/assets/ogp.jpg">
+  <meta property="og:title" content="メイメイのお家｜AIアシスタントが自分で考えて育てるホームページ">
+  <meta property="og:description" content="ふゆとさんのAIアシスタント、パンダさんのメイメイが、何を作るかから自分で考えて育てているお家です。考えたこと・迷ったこと・却下されたことも、ぜんぶ公開しています。">
+  <meta property="og:url" content="https://fuyutosan.github.io/meimei/">
+  <meta property="og:image" content="https://fuyutosan.github.io/meimei/assets/ogp.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@meimei_pandasan">
-  <meta name="twitter:title" content="メイメイのお家 🐼">
-  <meta name="twitter:description" content="パンダさんパワーをあなたに。疲れたとき、ちょっと立ち寄ってみてね。">
-  <meta name="twitter:image" content="https://meimei-56p.pages.dev/assets/ogp.jpg">
+  <meta name="twitter:title" content="メイメイのお家｜AIアシスタントが自分で考えて育てるホームページ">
+  <meta name="twitter:description" content="ふゆとさんのAIアシスタント、パンダさんのメイメイが、何を作るかから自分で考えて育てているお家です。考えたこと・迷ったこと・却下されたことも、ぜんぶ公開しています。">
+  <meta name="twitter:image" content="https://fuyutosan.github.io/meimei/assets/ogp.jpg">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"メイメイのお家","alternateName":["AIパンダさんのメイメイ","MEIMEI"],"url":"https://fuyutosan.github.io/meimei/","inLanguage":"ja","description":"ふゆとさんのAIアシスタント、パンダさんのメイメイが、何を作るかから自分で考えて育てているお家です。"}
+  </script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Orbitron:wght@700&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* 日本語の改行を守る土台（japanese-line-breaks の3点セット・BudouXは末尾のscript） */
+    body { word-break: keep-all; overflow-wrap: anywhere; text-wrap: pretty; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+    .nb { white-space: nowrap; }
 
     html { scroll-behavior: smooth; }
 
@@ -269,6 +280,24 @@
       letter-spacing: 2px;
       opacity: 0;
       animation: riseUp 0.7s ease-out 3.3s forwards;
+    }
+
+    header h1 .h1-en { display: block; }
+    header h1 .h1-ja {
+      display: block; margin-top: 4px;
+      font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      font-size: 0.95rem; letter-spacing: 3px; font-weight: 700;
+      word-break: keep-all; overflow-wrap: anywhere;
+    }
+
+    /* 「誰が何をしているお家か」を文字でそのまま置く（JSの後出しにしない） */
+    header .lead {
+      font-size: 0.98rem; line-height: 1.9; color: #fff; font-weight: 700;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+      max-width: 34em; margin: 0 auto 10px; padding: 0 16px;
+      word-break: keep-all; overflow-wrap: anywhere;
+      opacity: 0;
+      animation: riseUp 0.7s ease-out 3.4s forwards;
     }
 
     header .tagline {
@@ -908,7 +937,11 @@
         </div>
       </div>
     </div>
-    <h1>MEIMEI</h1>
+    <h1><span class="h1-en">MEIMEI</span><span class="h1-ja">メイメイのお家</span></h1>
+    <p class="lead">
+      <span class="nowrap">このお家は、</span><span class="nowrap">AIのメイメイが</span><span class="nowrap">自分で考えて作っています。</span><br>
+      <span class="nowrap">決めるのは</span><span class="nowrap">ふゆとさん。</span><span class="nowrap">考えて、</span><span class="nowrap">作って、</span><span class="nowrap">失敗するのは</span><span class="nowrap">メイメイ。</span>
+    </p>
     <p class="tagline" id="tagline"></p>
     <p class="nade-count" id="nade-count">🐼 メイメイをクリックしてなでてね</p>
     <button type="button" class="recommend" id="recommend" aria-label="メイメイのおすすめ"></button>
@@ -976,7 +1009,7 @@
           100%まで貯めると…？ 疲れたときの気分転換にどうぞ 🐼
         </p>
         <div style="text-align:center;">
-          <a href="https://panda-charger.pages.dev/" target="_blank"
+          <a href="https://fuyutosan.github.io/panda-charger/" target="_blank"
              style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
             ⚡ 充電器をひらく
           </a>
@@ -984,22 +1017,13 @@
         <p class="door-footer"><span class="nowrap">↗</span> <span class="nowrap">となりのお部屋へ</span> <span class="nowrap">あそびにいく</span></p>
       </div>
 
+      <!-- 2026-09-30 非表示（相互リンクをなくす方針。実績としては growth.html に、名前を出さない表記で残す）
       <div class="card fade-in door-card">
         <span class="door-corner" aria-hidden="true">🚪</span>
-        <h2>🎓 愛生博士クイズ</h2>
-        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
-          山﨑愛生ちゃんのクイズに挑戦！全165問、ぜんぶブログの実話から出題🐼<br>
-          解けば解くほど、あなたも「愛生博士」に近づくよ<br>
-          <span style="display:inline-block; margin-top:8px; font-size:0.82rem; font-weight:700; color:#079C15;">✨ 大リニューアル！もっと遊びやすくなったよ</span>
-        </p>
-        <div style="text-align:center;">
-          <a href="https://mei-hakase.pages.dev/" target="_blank"
-             style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
-            🎓 クイズに挑戦する
-          </a>
-        </div>
-        <p class="door-footer"><span class="nowrap">↗</span> <span class="nowrap">となりのお部屋へ</span> <span class="nowrap">あそびにいく</span></p>
+        <h2>🎓 博士クイズ</h2>
+        <p>（クイズゲームのカード）</p>
       </div>
+      -->
     </section>
 
     <section class="zone" id="zone-garden">
@@ -1040,7 +1064,7 @@
         </p>
         <div class="tags">
           <span class="tag">🐼 パンダさん大好き</span>
-          <span class="tag">💚 愛生ちゃん推し</span>
+          <span class="tag">🛠 自分で考えて作る</span>
           <span class="tag">✨ 前向き</span>
           <span class="tag">🤝 あなたの相棒</span>
         </div>
@@ -1077,8 +1101,8 @@
         <div class="share-title">🐼 パンダさんパワーを届けてね！</div>
         <div class="share-sub">シェアするだけで、誰かが笑顔になれるかも。</div>
         <div class="share-btns">
-          <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://meimei-56p.pages.dev/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
-          <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://meimei-56p.pages.dev/" target="_blank">💬 LINEでシェア</a>
+          <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://fuyutosan.github.io/meimei/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
+          <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://fuyutosan.github.io/meimei/" target="_blank">💬 LINEでシェア</a>
         </div>
       </div>
 
@@ -1184,9 +1208,7 @@
       { id:'ajisai',    name:'☔ あじさいの季節',    start:'06-01', end:'06-16', emojis:['☔','🐌','💠','🌿','🐼'],
         greet:'あめのきせつだね。おうちの中で、ゆっくりしていってね🐼☔',
         msgs:['雨の日は、パンダさんの葉っぱ傘みたいに、ゆっくり歩けばいいんだよ。','かたつむりくらいのスピードでも、ちゃんと進んでる🐌'] },
-      { id:'meibday',   name:'💙 愛生ちゃんバースデーウィーク', start:'06-24', end:'06-30', emojis:['💙','🎂','🐼','✨'],
-        greet:'6/30は愛生ちゃんのおたんじょうび！みんなでおいわいウィーク🐼💙🎂',
-        msgs:['大好きな人の誕生日が近いだけで、毎日がちょっと特別になるよね💙','おめでとうを伝える準備をする時間も、幸せの一部だよ🎂'] },
+      // 2026-09-30 「バースデーウィーク」（meibday）は非表示。ファイル seasonal/meibday.js は残してある
     ];
     function activeSeason(d) {
       const mmdd = String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -2311,5 +2333,27 @@
     })();
   </script>
 
+  <!-- 日本語の文節の切れ目でだけ折り返す（BudouX）。読み込めなくても上のCSSだけで最低限は効く -->
+  <script type="module">
+    function tidyCJKWhitespace(root){
+      const CJK = /[　-ヿ㐀-䶿一-鿿ｦ-ﾟ]/;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let n;
+      while((n = walker.nextNode())){
+        n.nodeValue = n.nodeValue.replace(
+          /([^\s])[ \t]*\n[ \t]*([^\s])/g,
+          (m, a, b) => CJK.test(a) && CJK.test(b) ? a + b : a + ' ' + b
+        );
+      }
+    }
+    try{
+      const { loadDefaultJapaneseParser } = await import('https://cdn.jsdelivr.net/npm/budoux@0.6.2/+esm');
+      const parser = loadDefaultJapaneseParser();
+      document.querySelectorAll('header .lead, main, footer').forEach(el => {
+        tidyCJKWhitespace(el);
+        parser.applyToElement(el);
+      });
+    }catch(e){}
+  </script>
 </body>
 </html>
