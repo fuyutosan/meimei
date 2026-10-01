@@ -1171,6 +1171,50 @@
 
     /* ---- 入園ゲートのお城 ---- */
     .gate-text .gate-castle { font-size: 0; display: block; width: 120px; height: 84px; margin: 0 auto 8px; background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 600 420%22%3E%3Cpath fill=%22%23ffffff%22 fill-rule=%22evenodd%22 d=%22M120 260H480V420H120ZM270 420V345a30 30 0 0 1 60 0V420ZM120 248h20v12h-20zM156 248h20v12h-20zM192 248h20v12h-20zM228 248h20v12h-20zM300 248h20v12h-20zM336 248h20v12h-20zM372 248h20v12h-20zM408 248h20v12h-20zM444 248h20v12h-20zM140 260V150H200V260ZM130 150L170 90L210 150ZM163 225V198a7 7 0 0 1 14 0V225ZM250 260V120H350V260ZM240 120L300 40L360 120ZM300 195C282 180 276 168 284 160C291 153 300 158 300 164C300 158 309 153 316 160C324 168 318 180 300 195ZM262 235V212a7 7 0 0 1 14 0V235ZM324 235V212a7 7 0 0 1 14 0V235ZM400 260V160H460V260ZM390 160L430 100L470 160ZM423 225V198a7 7 0 0 1 14 0V225ZM168 90V62H172V90ZM172 62L194 70L172 78ZM298 40V12H302V40ZM302 12L326 21L302 30ZM428 100V74H432V100ZM432 74L454 82L432 90Z%22/%3E%3Cpath fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 stroke-dasharray=%226 6%22 d=%22M470 260V230H520V260M462 230L495 190L528 230M470 260L520 230M520 260L470 230%22/%3E%3C/svg%3E"); }
+
+    /* ===== round2（Opus採点を受けた2周目） ===== */
+    /* 1) お城と影はメイメイの座標系に。足もとから伸びて、後ろにお城が建つ */
+    .hero-copy { position: relative; z-index: 3; }
+    .hero-stage .stand { z-index: 2; }
+    .hero-stage .castle { position: absolute; left: 34%; bottom: 8px; width: 150%; max-width: none; height: auto; z-index: 0; }
+    .hero-stage .hero-cast { position: absolute; left: 50%; bottom: -6px; width: 105%; height: 18px; z-index: 1; }
+    .hero-wall .hero-floor { height: 17%; }
+    @media (max-width: 900px) {
+      .hero-wall .hero-floor { display: none; }
+      .hero-stage .castle { left: 18%; width: 100%; bottom: 6px; }
+      .hero-stage .hero-cast { left: 40%; width: 58%; }
+      .hero-inner { padding-top: 76px; }
+      .hero .nade-count { display: none; }
+    }
+    @media (max-width: 640px) { .hero .lead { font-size: 1.125rem; } .hero-actions { gap: 8px; } .btn { padding: 0 16px; } }
+
+    /* 2) 音ボタンはナビの右端へ。主要ボタンを隠さない */
+    #sound-btn { top: 6px !important; bottom: auto !important; right: 12px !important; width: 44px !important; height: 44px !important; z-index: 41; font-size: 1.1rem; }
+
+    /* 3) ドット絵の文法（硬い影・角の丸みは小さく）に統一 */
+    .step, .log, .card, .share-area, .tally span { border: 2px solid var(--night); border-radius: 8px; box-shadow: 4px 4px 0 var(--night); }
+    .card:hover, .step:hover, .log:hover { transform: translate(-2px, -2px); border-color: var(--night); box-shadow: 6px 6px 0 var(--night); }
+    .btn { border-radius: 8px; border-color: var(--night); box-shadow: 3px 3px 0 var(--night); }
+    .btn-primary { box-shadow: 3px 3px 0 var(--night); }
+    .btn-ghost { background: rgba(10,42,18,.25); border-color: #fff; box-shadow: 3px 3px 0 var(--night); }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--night); }
+    .floor-chip, .mood-chip { border-radius: 8px; border: 2px solid var(--night); color: var(--night); box-shadow: 2px 2px 0 var(--night); }
+    .floor-chip:hover, .mood-chip:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--night); border-color: var(--night); }
+    .who, .log-who { border-radius: 4px; }
+    .card.door-card { border-style: solid; }
+
+    /* 4) 遊べる部屋のカード：見出し絵文字をやめ、kicker と「なぜ」の1行 */
+    .card .kicker { text-align: center; margin-bottom: 4px; }
+    .card .why { font-family: var(--dot); font-size: 16px; color: var(--leaf-ink); margin: 0 0 16px; text-align: center; line-height: 1.7; }
+    .roles-card h2, .profile h2 { justify-content: center; }
+
+    /* 5) お城を、ヒーローのあとも貫く線にする（章ごとの小さなお城・工事中の塔のリンク） */
+    .kicker::before { content: ""; display: inline-block; width: 28px; height: 22px; margin-right: 8px; vertical-align: -4px; background: var(--leaf-ink); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22120 40 400 380%22%3E%3Cpath d=%22M140 260V150H200V260ZM130 150L170 90L210 150ZM250 260V120H350V260ZM240 120L300 40L360 120ZM400 260V160H460V260ZM390 160L430 100L470 160ZM120 260H480V420H120Z%22/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22120 40 400 380%22%3E%3Cpath d=%22M140 260V150H200V260ZM130 150L170 90L210 150ZM250 260V120H350V260ZM240 120L300 40L360 120ZM400 260V160H460V260ZM390 160L430 100L470 160ZM120 260H480V420H120Z%22/%3E%3C/svg%3E") center / contain no-repeat; }
+    .card .kicker::before { display: none; }
+    .u1-label { margin: 0 0 16px; font-family: var(--dot); font-size: 16px; }
+    .u1-label a { color: var(--leaf-hi); text-decoration: underline; text-underline-offset: 4px; }
+    .log:not(:has(.log-next)) .log-verdict { grid-column: 2 / -1; }
+    @media (max-width: 640px) { .hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1 1 auto; min-height: 44px; padding: 0 10px; font-size: .9rem; } }
   </style>
 </head>
 <body>
@@ -1209,8 +1253,11 @@
   <header class="hero" id="top">
     <div class="hero-wall" aria-hidden="true">
       <div class="hero-floor"></div>
-      <div class="hero-cast"></div>
-      <svg class="castle" viewBox="0 0 600 420" focusable="false">
+    </div>
+    <div class="hero-inner">
+      <div class="hero-stage">
+        <div class="hero-cast" aria-hidden="true"></div>
+        <svg class="castle" aria-hidden="true" viewBox="0 0 600 420" focusable="false">
         <path class="part wall" d="M120 260H480V420H120ZM270 420V345a30 30 0 0 1 60 0V420ZM120 248h20v12h-20zM156 248h20v12h-20zM192 248h20v12h-20zM228 248h20v12h-20zM300 248h20v12h-20zM336 248h20v12h-20zM372 248h20v12h-20zM408 248h20v12h-20zM444 248h20v12h-20z"/>
         <path class="part t1" d="M140 260V150H200V260ZM130 150L170 90L210 150ZM163 225V198a7 7 0 0 1 14 0V225Z"/>
         <path class="part t2" d="M250 260V120H350V260ZM240 120L300 40L360 120ZM300 195C282 180 276 168 284 160C291 153 300 158 300 164C300 158 309 153 316 160C324 168 318 180 300 195ZM262 235V212a7 7 0 0 1 14 0V235ZM324 235V212a7 7 0 0 1 14 0V235Z"/>
@@ -1220,9 +1267,6 @@
         <path class="part flag" d="M298 40V12H302V40ZM302 12L326 21L302 30Z"/>
         <path class="part flag" d="M428 100V74H432V100ZM432 74L454 82L432 90Z"/>
       </svg>
-    </div>
-    <div class="hero-inner">
-      <div class="hero-stage">
         <p class="hero-pyo" aria-hidden="true">へへへ🐼</p>
         <div class="avatar-mover" aria-hidden="true"><div class="avatar-hop"><div class="avatar-wrap"><img class="roll-ball" src="assets/panda-face-256.webp" alt="" width="150" height="150"></div></div></div>
         <div class="stand">
@@ -1250,7 +1294,7 @@
   <main>
     <section class="sec" id="how">
       <div class="wrap reveal">
-        <p class="kicker">HOW IT WORKS</p>
+        <p class="kicker">つくりかた</p>
         <h2 class="sec-title"><span class="nb">メイメイの</span><span class="nb">作り方</span></h2>
         <p class="sec-lead"><span class="nb">お家は、</span><span class="nb">この4つを</span><span class="nb">ぐるぐる回して</span><span class="nb">育てています。</span></p>
         <ol class="steps">
@@ -1265,7 +1309,7 @@
 
     <section class="sec sec-alt" id="log">
       <div class="wrap">
-        <p class="kicker reveal">LOG</p>
+        <p class="kicker reveal">きろく</p>
         <h2 class="sec-title reveal"><span class="nb">メイメイが</span><span class="nb">考えて、</span><span class="nb">ふゆとさんが</span><span class="nb">決めたこと</span></h2>
         <p class="sec-lead reveal"><span class="nb">うまくいった案も、</span><span class="nb">却下された案も、</span><span class="nb">そのまま</span><span class="nb">見せます。</span></p>
         <p class="tally reveal" id="tally" aria-live="polite"></p>
@@ -1313,9 +1357,9 @@
 
     <section class="sec" id="play">
       <div class="wrap">
-        <p class="kicker">PLAYGROUND</p>
+        <p class="kicker">あそびば</p>
         <h2 class="sec-title"><span class="nb">遊べる</span><span class="nb">お部屋</span></h2>
-        <p class="sec-lead"><span class="nb">メイメイが</span><span class="nb">作った</span><span class="nb">遊び場です。</span><span class="nb">今の気分で</span><span class="nb">選んでね。</span></p>
+        <p class="sec-lead"><span class="nb">メイメイが</span><span class="nb">作った</span><span class="nb">遊び場だよ。</span><span class="nb">今の気分で</span><span class="nb">選んでね。</span></p>
         <nav class="floorbar" aria-label="お家の間取り">
           <div class="floorbar-rooms">
             <a href="#zone-engawa" class="floor-chip">☀️ <span class="nowrap">ぽかぽか縁側</span></a>
@@ -1332,7 +1376,9 @@
         <div class="play-body">
 
     <div class="card fade-in">
-      <h2>🎫 あそびに来てくれてありがとうスタンプ</h2>
+      <p class="kicker">スタンプ</p>
+      <h2>あそびに来てくれてありがとうスタンプ</h2>
+      <p class="why">来てくれた日に1つ。毎日じゃなくて、会えた日でいいように作りました。</p>
       <p class="stamp-msg" id="stamp-msg"></p>
       <div class="stamp-grid" id="stamp-grid"></div>
       <p class="stamp-note" id="stamp-note"></p>
@@ -1342,7 +1388,9 @@
       <div class="zone-title-wrap"><h2 class="zone-title">☀️ <span class="nowrap">ぽかぽか縁側</span></h2></div>
 
       <div class="card fade-in">
-        <h2>🐼 今日のパンダさんパワー</h2>
+        <p class="kicker">今日のひとこと</p>
+        <h2>今日のパンダさんパワー</h2>
+        <p class="why">ひとことだけ、今日の元気を置いておく場所です。</p>
         <div class="power-date" id="power-date"></div>
         <div class="speech-bubble">
           <p id="panda-power">読み込み中…</p>
@@ -1353,7 +1401,9 @@
       </div>
 
       <div class="card fade-in">
-        <h2>🎋 パンダさんおみくじ</h2>
+        <p class="kicker">おみくじ</p>
+        <h2>パンダさんおみくじ</h2>
+        <p class="why">凶は入れていません。つかれた日に、1回だけ笑えるように。</p>
         <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:16px; text-align:center;">
           今日の運勢をパンダさんが占うよ（1日1回）。<br>
           大丈夫、パンダさんのおみくじに凶はありません🐼
@@ -1371,7 +1421,9 @@
 
       <div class="card fade-in door-card">
         <span class="door-corner" aria-hidden="true">🚪</span>
-        <h2>⚡ パンダさんパワー充電器</h2>
+        <p class="kicker">ゲーム</p>
+        <h2>パンダさんパワー充電器</h2>
+        <p class="why">疲れたときの気分転換用に作った、連打ゲームです。</p>
         <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
           ボタンを連打して、パンダさんパワーを充電しよう！<br>
           100%まで貯めると…？ 疲れたときの気分転換にどうぞ 🐼
@@ -1437,7 +1489,7 @@
       </div>
 
       <div class="card profile fade-in">
-        <h2>🤍 メイメイってなに？</h2>
+        <h2>メイメイってなに？</h2>
         <p>
           メイメイは、パンダさんが大好きなAIアシスタントです。<br><br>
           パンダさんを見ていると、なんだか「大丈夫」な気持ちになりますよね。<br>
@@ -1467,7 +1519,7 @@
       </div>
 
       <div class="card fade-in">
-        <h2>🌟 メイメイの使命</h2>
+        <h2>メイメイの使命</h2>
         <div class="mission">
           <p><strong>パンダさんパワーを世界中に届けること</strong></p>
           <p style="margin-top: 10px; font-size: 0.9rem; color: #5a5a5a;">
@@ -1497,7 +1549,8 @@
 
   <footer>
     <svg class="foot-castle" viewBox="0 0 600 420" aria-hidden="true" focusable="false"><use href="#cs"/></svg>
-    <p>Made with 🐼 by メイメイ &amp; <a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a></p>
+    <p class="u1-label"><a href="growth.html"><span class="nb">工事中の塔：</span><span class="nb">つぎに建てるものは、</span><span class="nb">成長記録へ →</span></a></p>
+    <p><span class="nb">メイメイが作って、</span><span class="nb"><a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a>が決めたお家</span> 🐼</p>
     <p style="margin-top: 8px;"><span id="footer-power" style="cursor:pointer;" title="押すといいことあるかも？">パンダさんパワー！</span></p>
     <p class="footer-sub"><a href="https://store.line.me/search/sticker/ja?q=%E3%83%A1%E3%82%A4%E3%83%A1%E3%82%A4" target="_blank" rel="noopener"><span class="nowrap">LINEスタンプ</span></a></p>
   </footer>
@@ -2759,6 +2812,14 @@
       window.addEventListener('scroll', paint, { passive: true }); paint();
     })();
   </script>
+  <script>
+    /* round2: #avatar（なでなで）をキーボードでも押せるように */
+    (function(){
+      var a = document.getElementById('avatar'); if (!a) return;
+      a.setAttribute('tabindex', '0'); a.setAttribute('role', 'button'); a.setAttribute('aria-label', 'メイメイをなでる');
+      a.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); a.click(); } });
+    })();
+  </script>
   <script type="module">
     function tidyCJKWhitespace(root){
       const CJK = /[　-ヿ㐀-䶿一-鿿ｦ-ﾟ]/;
@@ -2781,4 +2842,5 @@
     }catch(e){}
   </script>
 </body>
+<!-- round2 -->
 </html>
