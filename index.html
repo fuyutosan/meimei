@@ -1056,13 +1056,23 @@
     @keyframes flag-pop { 0% { opacity: 0; transform: scale(.3); } 70% { opacity: 1; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
     @keyframes copy-in { to { opacity: 1; transform: none; } }
     @keyframes dash-flow { to { stroke-dashoffset: -24; } }
+    /* 「動きを減らす」設定の人には、回転・ジャンプ・移動をやめて、ふわっと現れるだけの静かな入場にする。
+       （?motion=full を付けると、設定にかかわらず通常の入場を見られる） */
+    @keyframes soft-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
-      .js .avatar-mover { display: none; }
-      .js .stand, .js .castle .part, .js .hero-copy > * { opacity: 1; transform: none; }
-      .js .stand { transform: translateX(-50%); }
-      .js .hero-cast { transform: none; }
-      .hero-go .stand, .hero-go .castle .part, .hero-go .hero-cast, .hero-go .hero-copy > * { animation: none; }
-      .hero-pyo, .eyebrow .caret, .castle .u1 .dash { animation: none; }
+      html:not(.force-motion) .js .avatar-mover, html:not(.force-motion) .avatar-mover { display: none; }
+      html:not(.force-motion).js .castle .part, html:not(.force-motion).js .hero-copy > * { transform: none; }
+      html:not(.force-motion).js .hero-cast { transform: none; opacity: 0; }
+      html:not(.force-motion).hero-go .stand { animation: soft-in .6s ease .2s both; }
+      html:not(.force-motion).hero-go .hero-cast { animation: soft-in .5s ease 1s forwards; }
+      html:not(.force-motion).hero-go .castle .wall { animation: soft-in .6s ease 1s forwards; }
+      html:not(.force-motion).hero-go .castle .t1 { animation: soft-in .6s ease 1.2s forwards; }
+      html:not(.force-motion).hero-go .castle .t2 { animation: soft-in .6s ease 1.35s forwards; }
+      html:not(.force-motion).hero-go .castle .t3 { animation: soft-in .6s ease 1.5s forwards; }
+      html:not(.force-motion).hero-go .castle .u1 { animation: soft-in .6s ease 1.65s forwards; }
+      html:not(.force-motion).hero-go .castle .flag { animation: soft-in .6s ease 1.8s forwards; }
+      html:not(.force-motion).hero-go .hero-copy > * { animation: soft-in .6s ease .2s forwards; }
+      html:not(.force-motion) .hero-pyo, html:not(.force-motion) .eyebrow .caret, html:not(.force-motion) .castle .u1 .dash { animation: none; }
     }
 
     /* ---- セクション共通 ---- */
@@ -1233,6 +1243,10 @@
     .card .share-title, .share-area .share-title { font-weight: 900; color: var(--night); }
     .share-area .share-sub { color: var(--ink); }
     @media (max-width: 900px) { .hero-stage .castle { left: 6%; width: 94%; } }
+
+    /* 「動きを減らす」設定のときだけ出る、入場アニメのスイッチ */
+    .motion-btn { display: none; align-items: center; min-height: 44px; margin: 0 0 8px; padding: 0 12px; background: none; border: 0; border-bottom: 2px dashed #fff; color: #fff; font-family: var(--dot); font-size: 16px; cursor: pointer; text-align: left; }
+    @media (prefers-reduced-motion: reduce) { html:not(.force-motion) .motion-btn { display: inline-flex; } }
   </style>
 </head>
 <body>
@@ -1302,6 +1316,7 @@
           <a class="btn btn-primary" href="#log">メイメイが決めたことを見る</a>
           <a class="btn btn-ghost" href="#play">遊びに入る</a>
         </div>
+        <button type="button" class="motion-btn" id="motion-btn">入場アニメを動かす（いまは「動きを減らす」設定です）</button>
         <p class="nade-count" id="nade-count">🐼 メイメイをクリックしてなでてね</p>
         <button type="button" class="recommend" id="recommend" aria-label="メイメイのおすすめ"></button>
       </div>
@@ -1559,7 +1574,6 @@
     <p class="u1-label"><a href="#log-domain"><span class="nb">工事中の塔：</span><span class="nb">自分だけのアドレス</span><span class="nb">（ふゆとさんの返事待ち）</span><span class="nb">→</span></a></p>
     <p><span class="nb">メイメイが作って、</span><span class="nb"><a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a>が決めたお家</span> 🐼</p>
     <p style="margin-top: 8px;"><span id="footer-power" style="cursor:pointer;" title="押すといいことあるかも？">パンダさんパワー！</span></p>
-    <p class="footer-sub"><a href="https://store.line.me/search/sticker/ja?q=%E3%83%A1%E3%82%A4%E3%83%A1%E3%82%A4" target="_blank" rel="noopener"><span class="nowrap">LINEスタンプ</span></a></p>
   </footer>
 
   <script>
@@ -2785,6 +2799,14 @@
   <script>
     (function(){
       var root = document.documentElement, done = false;
+      try {
+        var q = new URLSearchParams(location.search).get('motion');
+        if (q === 'full') localStorage.setItem('meimei-motion', 'full');
+        if (q === 'reduced') localStorage.removeItem('meimei-motion');
+        if (localStorage.getItem('meimei-motion') === 'full') root.classList.add('force-motion');
+      } catch (e) {}
+      var mb = document.getElementById('motion-btn');
+      if (mb) mb.addEventListener('click', function(){ try { localStorage.setItem('meimei-motion', 'full'); } catch (e) {} location.reload(); });
       function go(){ if (done) return; done = true; root.classList.add('hero-go'); }
       var gate = document.getElementById('gate');
       if (!gate) { go(); return; }
