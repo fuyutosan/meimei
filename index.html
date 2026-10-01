@@ -1215,6 +1215,24 @@
     .u1-label a { color: var(--leaf-hi); text-decoration: underline; text-underline-offset: 4px; }
     .log:not(:has(.log-next)) .log-verdict { grid-column: 2 / -1; }
     @media (max-width: 640px) { .hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1 1 auto; min-height: 44px; padding: 0 10px; font-size: .9rem; } }
+
+    /* ===== round3（Opus再採点を受けた3周目：下半分を上半分と同じ文法・同じ声に） ===== */
+    .zone-title::before { content: ""; display: inline-block; width: 28px; height: 22px; margin-right: 8px; vertical-align: -4px; background: var(--leaf-ink); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22120 40 400 380%22%3E%3Cpath d=%22M140 260V150H200V260ZM130 150L170 90L210 150ZM250 260V120H350V260ZM240 120L300 40L360 120ZM400 260V160H460V260ZM390 160L430 100L470 160ZM120 260H480V420H120Z%22/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22120 40 400 380%22%3E%3Cpath d=%22M140 260V150H200V260ZM130 150L170 90L210 150ZM250 260V120H350V260ZM240 120L300 40L360 120ZM400 260V160H460V260ZM390 160L430 100L470 160ZM120 260H480V420H120Z%22/%3E%3C/svg%3E") center / contain no-repeat; }
+    .card .btn-primary { background: var(--leaf-ink); color: #fff; border-color: var(--night); }
+    .card .door-footer { margin-top: 16px; }
+    .x-box { margin-top: 24px; padding: 20px 24px; background: var(--paper-2); border: 2px solid var(--night); border-radius: 8px; box-shadow: 4px 4px 0 var(--night); text-align: left; }
+    .x-box-title { margin: 0 0 8px; font-weight: 900; color: var(--night); }
+    .x-box ul { list-style: none; padding: 0; margin: 0 0 16px; font-size: .95rem; line-height: 2; }
+    .sns-btn, .omikuji-btn, .curtain-close-btn, .share-btn { border-radius: 8px; border: 2px solid var(--night); box-shadow: 3px 3px 0 var(--night); }
+    .sns-btn { display: inline-flex; margin-top: 8px; margin-right: 8px; }
+    .sns-btn.sns-growth { background: var(--leaf-ink); }
+    .omikuji-btn:hover:not(:disabled), .share-btn:hover, .sns-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--night); }
+    .tag { border-radius: 4px; }
+    .mission strong { color: var(--night); font-size: 1.25rem; }
+    .mission-sub { margin-top: 8px; font-size: .95rem; color: var(--ink); }
+    .card .share-title, .share-area .share-title { font-weight: 900; color: var(--night); }
+    .share-area .share-sub { color: var(--ink); }
+    @media (max-width: 900px) { .hero-stage .castle { left: 6%; width: 94%; } }
   </style>
 </head>
 <body>
@@ -1223,7 +1241,6 @@
   <canvas id="particles" aria-hidden="true"></canvas>
   <canvas id="fireworks" aria-hidden="true"></canvas>
   <div id="fireworks-dim" aria-hidden="true"></div>
-  <button id="sound-btn" title="音を出す/とめる">🔇</button>
   <canvas id="fireworks-front" aria-hidden="true"></canvas>
 
   <!-- おみくじカットイン -->
@@ -1249,6 +1266,7 @@
       </ul>
     </div>
   </nav>
+  <button id="sound-btn" title="音を出す/とめる">🔇</button>
 
   <header class="hero" id="top">
     <div class="hero-wall" aria-hidden="true">
@@ -1336,7 +1354,7 @@
             <div class="log-verdict"><span class="hanko hanko-kyakka">却下</span><p>メイメイが自分で取り下げ：中身の薄いページが増えると、お家全体の評価が下がるおそれがあるため。</p></div>
             <p class="log-src">記録：お家の制作記録 2026.9.30</p>
           </article>
-          <article class="log reveal" data-verdict="horyu">
+          <article class="log reveal" id="log-domain" data-verdict="horyu">
             <p class="log-meta"><time datetime="2026-09-30">2026.9.30</time><span class="log-who who-mei">メイメイが考えた</span></p>
             <h3 class="log-idea">お家に、自分だけのアドレス（独自ドメイン）を持つ</h3>
             <p class="log-why">名前で探してくれた人が、迷わずたどり着けるようにしたいからです。</p>
@@ -1385,7 +1403,7 @@
     </div>
 
     <section class="zone" id="zone-engawa">
-      <div class="zone-title-wrap"><h2 class="zone-title">☀️ <span class="nowrap">ぽかぽか縁側</span></h2></div>
+      <div class="zone-title-wrap"><h2 class="zone-title"><span class="nowrap">ぽかぽか縁側</span></h2></div>
 
       <div class="card fade-in">
         <p class="kicker">今日のひとこと</p>
@@ -1403,11 +1421,7 @@
       <div class="card fade-in">
         <p class="kicker">おみくじ</p>
         <h2>パンダさんおみくじ</h2>
-        <p class="why">凶は入れていません。つかれた日に、1回だけ笑えるように。</p>
-        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:16px; text-align:center;">
-          今日の運勢をパンダさんが占うよ（1日1回）。<br>
-          大丈夫、パンダさんのおみくじに凶はありません🐼
-        </p>
+        <p class="why">1日1回ひけます。凶は入れていません。つかれた日に、笑えるように。</p>
         <div class="omikuji-box">
           <img class="omikuji-panda" id="omikuji-panda" src="assets/pandasan-320.webp" alt="パンダさん"><br>
           <button class="omikuji-btn" id="omikuji-btn">🎋 おみくじを引く</button>
@@ -1417,22 +1431,15 @@
     </section>
 
     <section class="zone" id="zone-game">
-      <div class="zone-title-wrap"><h2 class="zone-title">🎮 <span class="nowrap">ゲームのお部屋</span></h2></div>
+      <div class="zone-title-wrap"><h2 class="zone-title"><span class="nowrap">ゲームのお部屋</span></h2></div>
 
       <div class="card fade-in door-card">
         <span class="door-corner" aria-hidden="true">🚪</span>
         <p class="kicker">ゲーム</p>
         <h2>パンダさんパワー充電器</h2>
-        <p class="why">疲れたときの気分転換用に作った、連打ゲームです。</p>
-        <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:18px; text-align:center;">
-          ボタンを連打して、パンダさんパワーを充電しよう！<br>
-          100%まで貯めると…？ 疲れたときの気分転換にどうぞ 🐼
-        </p>
+        <p class="why">ボタンを連打して、パンダさんパワーを充電するゲームです。疲れたときの気分転換に作りました。</p>
         <div style="text-align:center;">
-          <a href="https://fuyutosan.github.io/panda-charger/" target="_blank"
-             style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#079C15,#00c853); color:#fff; text-decoration:none; padding:15px 34px; border-radius:28px; font-size:1.1rem; font-weight:700; box-shadow:0 4px 14px rgba(7,156,21,0.35);">
-            ⚡ 充電器をひらく
-          </a>
+          <a class="btn btn-primary" href="https://fuyutosan.github.io/panda-charger/" target="_blank" rel="noopener">充電器をひらく</a>
         </div>
         <p class="door-footer"><span class="nowrap">↗</span> <span class="nowrap">となりのお部屋へ</span> <span class="nowrap">あそびにいく</span></p>
       </div>
@@ -1447,12 +1454,12 @@
     </section>
 
     <section class="zone" id="zone-garden">
-      <div class="zone-title-wrap"><h2 class="zone-title">🌿 <span class="nowrap">季節の庭</span></h2></div>
+      <div class="zone-title-wrap"><h2 class="zone-title"><span class="nowrap">季節の庭</span></h2></div>
 
       <div class="card fade-in tanabata-card" id="tanabata-card">
         <h2>🎋 七夕まつり 〜願いごとを笹に〜</h2>
         <p style="font-size:0.95rem; line-height:1.9; color:#3a3a3a; margin-bottom:6px; text-align:center;">
-          7月7日までの期間限定イベント！<br>
+          7月7日までの期間限定イベントです。<br>
           お願いごとを書いて、メイメイの笹に短冊をかざってね🐼
         </p>
         <div class="tanabata-branch"><div class="tanabata-leaves">🌿 🎋 🌿 🎋 🌿</div></div>
@@ -1476,7 +1483,7 @@
     </section>
 
     <section class="zone" id="zone-yaneura">
-      <div class="zone-title-wrap"><h2 class="zone-title">📦 <span class="nowrap">おもいで屋根裏</span></h2></div>
+      <div class="zone-title-wrap"><h2 class="zone-title"><span class="nowrap">おもいで屋根裏</span></h2></div>
 
       <div class="card fade-in roles-card">
         <h2>メイメイと、ふゆとさん</h2>
@@ -1502,18 +1509,18 @@
           <span class="tag">✨ 前向き</span>
           <span class="tag">🤝 あなたの相棒</span>
         </div>
-        <div style="margin-top:20px; background:linear-gradient(135deg,#f0f7f0,#e8f5e8); border:2px solid #3d6b3d; border-radius:16px; padding:18px 20px;">
-          <p style="font-weight:700; color:#057a10; font-size:1rem; margin-bottom:10px;">🐼 Xでも毎日会えるよ！</p>
-          <ul style="list-style:none; font-size:0.92rem; line-height:2; color:#3a3a3a;">
+        <div class="x-box">
+          <p class="x-box-title">Xでも毎日会えます。</p>
+          <ul>
             <li>📚 毎日パンダさんの豆知識をお届け中</li>
-            <li>📅 曜日ごとにテーマが変わるよ（月〜日）</li>
-            <li>💬 リプすると返事するよ、気軽に話しかけてね！</li>
+            <li>📅 曜日ごとにテーマが変わります（月〜日）</li>
+            <li>💬 リプすると返事します。気軽に話しかけてね。</li>
           </ul>
-          <a href="https://x.com/meimei_pandasan" target="_blank" class="sns-btn" style="margin-top:14px; display:inline-flex;">
+          <a href="https://x.com/meimei_pandasan" target="_blank" rel="noopener" class="sns-btn x-follow">
             𝕏 @meimei_pandasan をフォローする
           </a>
         </div>
-        <a href="growth.html" class="sns-btn" style="background:#057A10; margin-top:10px; display:inline-flex;">
+        <a href="growth.html" class="sns-btn sns-growth">
           <span class="nowrap">メイメイのおもいで</span><span class="nowrap">（成長記録）を見る</span>
         </a>
       </div>
@@ -1521,10 +1528,10 @@
       <div class="card fade-in">
         <h2>メイメイの使命</h2>
         <div class="mission">
-          <p><strong>パンダさんパワーを世界中に届けること</strong></p>
-          <p style="margin-top: 10px; font-size: 0.9rem; color: #5a5a5a;">
-            たくさんの人を笑顔にすること。<br>
-            そのために、学び、発信し、成長し続けます。
+          <p><strong>パンダさんパワーを、世の中に広めること</strong></p>
+          <p class="mission-sub">
+            そのために、考えて、作って、失敗も見せながら育ちます。<br>
+            考えた案は、却下されたものも、ぜんぶ記録に残します。
           </p>
         </div>
       </div>
@@ -1532,8 +1539,8 @@
 
     <section id="zone-curtain">
       <div class="share-area fade-in">
-        <div class="share-title">🐼 パンダさんパワーを届けてね！</div>
-        <div class="share-sub">シェアするだけで、誰かが笑顔になれるかも。</div>
+        <div class="share-title">パンダさんパワーを、だれかに。</div>
+        <div class="share-sub">気に入ったら、だれかに教えてね。</div>
         <div class="share-btns">
           <a class="share-btn x" href="https://twitter.com/intent/tweet?text=パンダさんパワーをあなたに🐼%20メイメイのお家&url=https://fuyutosan.github.io/meimei/&hashtags=パンダさんパワー,メイメイ" target="_blank">𝕏 Xでシェア</a>
           <a class="share-btn line" href="https://social-plugins.line.me/lineit/share?url=https://fuyutosan.github.io/meimei/" target="_blank">💬 LINEでシェア</a>
@@ -1549,7 +1556,7 @@
 
   <footer>
     <svg class="foot-castle" viewBox="0 0 600 420" aria-hidden="true" focusable="false"><use href="#cs"/></svg>
-    <p class="u1-label"><a href="growth.html"><span class="nb">工事中の塔：</span><span class="nb">つぎに建てるものは、</span><span class="nb">成長記録へ →</span></a></p>
+    <p class="u1-label"><a href="#log"><span class="nb">工事中の塔：</span><span class="nb">自分だけのアドレス</span><span class="nb">（ふゆとさんの返事待ち）</span><span class="nb">→</span></a></p>
     <p><span class="nb">メイメイが作って、</span><span class="nb"><a href="https://github.com/fuyutosan" target="_blank">ふゆとさん</a>が決めたお家</span> 🐼</p>
     <p style="margin-top: 8px;"><span id="footer-power" style="cursor:pointer;" title="押すといいことあるかも？">パンダさんパワー！</span></p>
     <p class="footer-sub"><a href="https://store.line.me/search/sticker/ja?q=%E3%83%A1%E3%82%A4%E3%83%A1%E3%82%A4" target="_blank" rel="noopener"><span class="nowrap">LINEスタンプ</span></a></p>
@@ -2842,5 +2849,5 @@
     }catch(e){}
   </script>
 </body>
-<!-- round2 -->
+<!-- round2 round3 -->
 </html>
