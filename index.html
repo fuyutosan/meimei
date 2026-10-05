@@ -1224,7 +1224,7 @@
     .card .kicker::before { display: none; }
     .u1-label { margin: 0 0 16px; font-family: var(--dot); font-size: 16px; }
     .u1-label a { color: var(--leaf-hi); text-decoration: underline; text-underline-offset: 4px; }
-    .log:not(:has(.log-next)) .log-verdict { grid-column: 2 / -1; }
+    @media (min-width: 960px) { .log:not(:has(.log-next)) .log-verdict { grid-column: 2 / -1; } }
     @media (max-width: 640px) { .hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1 1 auto; min-height: 44px; padding: 0 10px; font-size: .9rem; } }
 
     /* ===== round3（Opus再採点を受けた3周目：下半分を上半分と同じ文法・同じ声に） ===== */
